@@ -1,0 +1,25 @@
+﻿<Window x:Class="PlanMVMU.Texts"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:PlanMVMU"
+        mc:Ignorable="d"
+        Title="Добавление текста" Height="450" Width="800" WindowStartupLocation="CenterScreen" MinWidth="800" MinHeight="450" ResizeMode="NoResize">
+    <Grid Background="#FFD4C7D8">
+        <StackPanel Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="CBKategory" DisplayMemberPath="NameKategory" materialDesign:HintAssist.Hint="Выберите категорию" FontSize="14" Width="160" materialDesign:ShadowAssist.ShadowDepth="Depth3" SelectionChanged="CBKategory_SelectionChanged"/>
+                <ComboBox x:Name="CBStage" materialDesign:HintAssist.Hint="Выберите этап" FontSize="14" Width="115" Margin="20,0,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth3" SelectionChanged="CBStage_SelectionChanged"/>
+            </StackPanel>
+            <TextBox x:Name="TBText" Margin="0,10" Style="{StaticResource MaterialDesignOutlinedTextBox}" FontSize="14" Background="#FFFAFAFA"
+            VerticalAlignment="Top" Height="297" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Выбрав категорию и этап, введите или вставьте скопированный текст и нажмите сохранить" />
+            <StackPanel Orientation="Horizontal" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <Button x:Name="BtnSaveText" Content="Сохранить текст" Width="150" materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="5" Click="BtnSaveText_Click"/>
+                <Button x:Name="BtnEditText" Content="Изменить (категорию/этап/текст)" Margin="80,0" materialDesign:ShadowAssist.ShadowDepth="Depth3" Width="260" Visibility="Hidden" Click="BtnEditText_Click"/>
+                <Button x:Name="BtnDelText" Content="Удалить текст из этапа" materialDesign:ShadowAssist.ShadowDepth="Depth3" Width="183" Margin="5" Visibility="Hidden" Click="BtnDelText_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

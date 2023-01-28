@@ -1,0 +1,62 @@
+﻿<Window x:Class="PlanMVMU.AddDelStudents"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlanMVMU"
+        mc:Ignorable="d"
+        Title="Добавление студентов" Height="450" Width="800" MinHeight="450" MinWidth="800" FontSize="16" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="icons/Icon.ico">
+    <Grid Background="#FFD4C7D8">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="154"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Menu VerticalAlignment="Top" Grid.ColumnSpan="3" Height="21">
+            <MenuItem Header="Дополнительные функции" Height="21">
+                <Button x:Name="BtnDellAllKompos" Content="Удалить всех композиторов" Height="28" Click="BtnDellAllKompos_Click" />
+            </MenuItem>
+        </Menu>
+
+        <DataGrid x:Name="DGStudents" Margin="10,26,10,3" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DGStudents_SelectionChanged" Grid.ColumnSpan="3">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DayWeek}" Width="1.2*" Header="День недели"/>
+                <DataGridTextColumn Binding="{Binding NameStud}" Width="1.2*" Header="Фамилия студента"/>
+                <DataGridTextColumn Binding="{Binding CourseStud}" Width="1*" Header="Курс"/>
+                <DataGridTextColumn Binding="{Binding KomposStud}" Width="2*" Header="Композитор и изучаемое произведение"/>
+                <DataGridTextColumn Binding="{Binding Kategory}" Width="1*" Header="Категория"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox x:Name="TBFIOFile" Margin="10,0,13,0" materialDesign:HintAssist.Hint="Фамилия Имя для названия файла" materialDesign:HintAssist.HelperText="Пример: Кудряшов А." VerticalAlignment="Top" Grid.Row="1" Height="30" SelectionChanged="TBFIOFile_SelectionChanged"/>
+        <TextBox x:Name="TBFIOText" Margin="10,48,13,0" materialDesign:HintAssist.Hint="Фамилия Имя (творительный падеж)" materialDesign:HintAssist.HelperText="Пример: Кудряшовым Алексеем" VerticalAlignment="Top" Grid.Row="1" Height="30" SelectionChanged="TBFIOText_SelectionChanged"/>
+        <TextBox x:Name="TBCourse" Margin="10,96,13,0" materialDesign:HintAssist.Hint="Курс" materialDesign:HintAssist.HelperText="Пример: 1" VerticalAlignment="Top" Grid.Row="1" Height="30" SelectionChanged="TBCourse_SelectionChanged"/>
+        <TextBox x:Name="TBGroup" Margin="10,143,13,0" materialDesign:HintAssist.Hint="Группа" materialDesign:HintAssist.HelperText="Пример: 1-1-1" VerticalAlignment="Top" Grid.Row="1" Height="30" SelectionChanged="TBGroup_SelectionChanged"/>
+
+        <Label Content="Выберите дни &#xD;&#xA;занятий у студента:" VerticalAlignment="Top" Grid.Row="1" Margin="2,0" Height="52" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxMon" Content="Пн" HorizontalAlignment="Left" Margin="2,48,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="24" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxTue" Content="Вт" HorizontalAlignment="Left" Margin="2,70,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="22" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxWed" Content="Ср" HorizontalAlignment="Left" Margin="2,90,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="24" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxThu" Content="Чт" HorizontalAlignment="Left" Margin="2,112,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="22" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxFri" Content="Пт" HorizontalAlignment="Left" Margin="2,132,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="24" Grid.Column="1" />
+        <CheckBox x:Name="ChkBxSat" Content="Сб" HorizontalAlignment="Left" Margin="2,154,0,0" VerticalAlignment="Top" Width="44" Grid.Row="1" Height="22" Grid.Column="1" />
+
+        <TextBox x:Name="TBKompos" Margin="3,0,100,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" materialDesign:HintAssist.Hint="Композитор и произведение" materialDesign:HintAssist.HelperText="Пример: И.С. Бах Маленькая прелюдия d-moll" Height="30" Visibility="Hidden"/>
+        <materialDesign:PackIcon Kind="QuestionMarkCircle" Background="#FFD4C7D8" Grid.Column="2" Margin="0,160,10,0" Grid.Row="1" Height="30" Width="30" HorizontalAlignment="Right" />
+        <Button x:Name="BtnNewKompos"  Content="+" Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,10,0" Grid.Row="1" VerticalAlignment="Top" Width="40" Height="30" Click="BtnNewKompos_Click" Visibility="Hidden"/>
+        <Button x:Name="BtnDelKompos" Content="-" Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,55,0" Grid.Row="1" VerticalAlignment="Top" Width="40" Height="30" Click="BtnDelKompos_Click" Visibility="Hidden"/>
+        <Button x:Name="BtnAddEditStud" Content="Добавить студента" Margin="0,2,10,0" VerticalAlignment="Top" Grid.Row="2" HorizontalAlignment="Right" Width="169" Grid.Column="2" Click="BtnAddEditStud_Click"/>
+        <Button x:Name="BtnClearBoxes" Content="Создать нового" Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,197,0" Grid.Row="2" VerticalAlignment="Top" Width="138" Click="BtnClearBoxes_Click" Visibility="Hidden"/>
+        <Button x:Name="BtnDelStud" Content="Удалить студента" HorizontalAlignment="Left" Margin="10,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="164" FontSize="12" Visibility="Hidden" Click="BtnDelStud_Click"/>
+        <ComboBox x:Name="CBKategory" DisplayMemberPath="NameKategory" Grid.Column="2" Margin="3,62,100,0" Grid.Row="1" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Категория произведения" materialDesign:HintAssist.HelperText="Пример: Ансамбль или Произведение" SelectionChanged="CBKategory_SelectionChanged" Visibility="Hidden"/>
+        <Button x:Name="BtnEditKategory" Content="Изм." Grid.Column="2" HorizontalAlignment="Right" Margin="0,62,10,0" Grid.Row="1" VerticalAlignment="Top" Width="85" Height="30" Click="BtnEditKategory_Click" Visibility="Hidden"/>
+        <materialDesign:PackIcon Kind="ArrowLeftBold" x:Name="BtnKomposBack" Background="#FFD4C7D8" Grid.Column="2" Margin="3,112,0,0" Grid.Row="1" Height="50" Width="50" MouseDown="BtnKomposBack_MouseDown" Visibility="Hidden"/>
+        <materialDesign:PackIcon Kind="ArrowRightBold" x:Name="BtnKomposNext" Background="#FFD4C7D8" Grid.Column="2" Margin="0,112,100,0" Grid.Row="1" Height="50" Width="50" HorizontalAlignment="Right" MouseDown="BtnKomposNext_MouseDown" Visibility="Hidden"/>
+    </Grid>
+</Window>

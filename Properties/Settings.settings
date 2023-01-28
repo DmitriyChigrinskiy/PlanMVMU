@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PlanMVMU.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultLanguage" Type="System.Globalization.CultureInfo" Scope="User">
+      <Value Profile="(Default)">ru-RU</Value>
+    </Setting>
+    <Setting Name="ThemeLesson" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Раздел №2. Учебный фортепианный репертуар</Value>
+    </Setting>
+    <Setting Name="TargetLearning" Type="System.String" Scope="User">
+      <Value Profile="(Default)">совершенствование навыков грамотного разбора нотного текста</Value>
+    </Setting>
+    <Setting Name="TargetDevelopment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">развитие навыков слухового контроля</Value>
+    </Setting>
+    <Setting Name="TargetEducation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">воспитание трудолюбия, ответственного отношения к процессу обучения</Value>
+    </Setting>
+    <Setting Name="FormLesson" Type="System.String" Scope="User">
+      <Value Profile="(Default)">индивидуальная</Value>
+    </Setting>
+    <Setting Name="MethodLearning" Type="System.String" Scope="User">
+      <Value Profile="(Default)">словесный, практический, наглядный, частично-поисковый</Value>
+    </Setting>
+    <Setting Name="LearningTools" Type="System.String" Scope="User">
+      <Value Profile="(Default)">фортепиано, ноты</Value>
+    </Setting>
+    <Setting Name="FirstPart" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ознакомление с темой урока, постановка его целей и задач</Value>
+    </Setting>
+    <Setting Name="TwoPart" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ш. Ганон Упражнения и гаммы</Value>
+    </Setting>
+    <Setting Name="SaveUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="StartDate" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2023-09-01</Value>
+    </Setting>
+    <Setting Name="StopDate" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2023-09-01</Value>
+    </Setting>
+    <Setting Name="Prepodavatel" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Stop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

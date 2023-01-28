@@ -1,0 +1,87 @@
+﻿<Page x:Class="PlanMVMU.CreateOptionalPlan"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:PlanMVMU"
+      mc:Ignorable="d" 
+      d:DesignHeight="490" d:DesignWidth="875"
+      Title="CreateOptionalPlan" FontSize="16">
+
+    <Grid Background="#FFFFF5F5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="442*"/>
+            <ColumnDefinition Width="433*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="3,10,10,0" Height="35" VerticalAlignment="Top" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="13*"/>
+                    <ColumnDefinition Width="9*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Занятие -" Margin="1,0,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="78"/>
+                <Label Content="Заверено -" HorizontalAlignment="Left" Width="88"/>
+                <Label x:Name="LblDateSertified"  Content="«3» сентября 2022г." Margin="88,0,1,0" VerticalAlignment="Top" Height="32"/>
+                <Label x:Name="LblDateSession" Content="10. 09. 2022" Grid.Column="1" Margin="79,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,2,0" Height="35" VerticalAlignment="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="52"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="45"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Студент -"/>
+                <Label x:Name="LblStudName"  Content="Петров А." Grid.Column="1"/>
+                <Label Content="Курс -" Grid.Column="2" HorizontalContentAlignment="Right"/>
+                <Label x:Name="LblStudCourse" Content="4" Grid.Column="3"/>
+                <Label Content="Группа -" Grid.Column="4" HorizontalContentAlignment="Right"/>
+                <Label x:Name="LblStudGroup"  Content="1-1-1" Grid.Column="5"/>
+
+            </Grid>
+        </Border>
+        <Button x:Name="BtnNextPlan"  Content="Далее" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="151" Grid.Column="1" IsEnabled="False" Click="BtnNextPlan_Click"/>
+        <Border Margin="10,50,10,47" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="155"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="CBKompos1" MinHeight="42" Grid.Column="0" Margin="10,10,40,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Первое произведение" Height="42" SelectionChanged="CBKompos1_SelectionChanged"/>
+                <materialDesign:PackIcon x:Name="BtnCloseKompos1" Kind="CloseBox" Margin="0,17,0,0" Height="35" Width="35" HorizontalAlignment="Right" MouseDown="BtnCloseKompos1_MouseDown" />
+                <ComboBox x:Name="CBKategory1" MinHeight="42" Grid.Column="0" Margin="10,57,10,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Категория 1 произведения" Height="42" SelectionChanged="CBKategory1_SelectionChanged"/>
+                <ComboBox x:Name="CBStage1" MinHeight="42" Margin="10,104,10,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Этап 1 произведения" Height="42" IsEnabled="False" SelectionChanged="CBStage1_SelectionChanged"/>
+                <TextBox x:Name="TBText1" Margin="10" Style="{StaticResource MaterialDesignOutlinedTextBox}" Grid.Row="1" FontSize="14" Background="#FFFAFAFA"
+                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Текст первого произведения" />
+
+                <ComboBox x:Name="CBKategory2" MinHeight="42" Grid.Column="1" Grid.Row="0" Margin="10,57,10,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Категория 2 произведения" Height="42" SelectionChanged="CBKategory2_SelectionChanged"/>
+                <materialDesign:PackIcon x:Name="BtnCloseKompos2" Kind="CloseBox" Grid.Column="1" Margin="0,17,0,0" Height="35" Width="35" HorizontalAlignment="Right" MouseDown="BtnCloseKompos2_MouseDown" />
+                <ComboBox x:Name="CBStage2" MinHeight="42" Grid.Column="1" Grid.Row="0" Margin="10,104,10,0" materialDesign:HintAssist.Hint="Этап 2 произведения" VerticalAlignment="Top" Height="42" IsEnabled="False" SelectionChanged="CBStage2_SelectionChanged"/>
+                <TextBox x:Name="TBText2" Margin="10" Style="{StaticResource MaterialDesignOutlinedTextBox}" Grid.Row="1" Grid.Column="1" FontSize="14" Background="#FFFAFAFA"
+                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Текст второго произведения" />
+                <ComboBox x:Name="CBKompos2" MinHeight="42" Grid.Column="1" Margin="10,10,40,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Второе произведение" Height="42" SelectionChanged="CBKompos2_SelectionChanged"/>
+
+                <ComboBox x:Name="CBKategory3" MinHeight="42" Grid.Column="2" Grid.Row="0" Margin="10,57,10,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Категория 3 произведения" Height="42" SelectionChanged="CBKategory3_SelectionChanged"/>
+                <materialDesign:PackIcon x:Name="BtnCloseKompos3" Kind="CloseBox" Grid.Column="2" Margin="0,17,0,0" Height="35" Width="35" HorizontalAlignment="Right" MouseDown="BtnCloseKompos3_MouseDown" />
+                <ComboBox x:Name="CBStage3" MinHeight="42" Grid.Column="2" Grid.Row="0" Margin="10,104,10,0" materialDesign:HintAssist.Hint="Этап 3 произведения" VerticalAlignment="Top" Height="42" IsEnabled="False" SelectionChanged="CBStage3_SelectionChanged"/>
+                <TextBox x:Name="TBText3" Margin="10" Style="{StaticResource MaterialDesignOutlinedTextBox}" Grid.Row="1" Grid.Column="2" FontSize="14" Background="#FFFAFAFA"
+                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Текст третьего произведения" />
+                <ComboBox x:Name="CBKompos3" MinHeight="42" Grid.Column="2" Margin="10,10,40,0" VerticalAlignment="Top" materialDesign:HintAssist.Hint="Третье произведение" Height="42" SelectionChanged="CBKompos3_SelectionChanged"/>
+            </Grid>
+        </Border>
+        <Button x:Name="BtnStopCreatePlan" Content="Остановить создание планов" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="225" IsEnabled="False" Click="BtnStopCreatePlan_Click"/>
+
+
+    </Grid>
+</Page>
