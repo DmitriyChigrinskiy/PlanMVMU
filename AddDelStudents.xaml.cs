@@ -222,7 +222,7 @@ namespace PlanMVMU
                 Entities.Students.Add(student);
                 Entities.SaveChanges();
                 SelectedStud = student;
-                CBKategory.Text = "";
+                CBKategory.Text = "Произведение";
                 TBKompos.Visibility = Visibility.Visible;
                 CBKategory.Visibility = Visibility.Visible;
                 BtnNewKompos.Visibility = Visibility.Visible;
@@ -298,7 +298,6 @@ namespace PlanMVMU
                         Entities.SaveChanges();
                     }
                 }
-                CBKategory.IsEditable = false;
                 UpdateDG();
                 DGStudents.ScrollIntoView(DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())]);
                 DGStudents.SelectedItem = DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())];
@@ -395,6 +394,8 @@ namespace PlanMVMU
         {
             TBKompos.Text = "";
             CBKategory.SelectedIndex = -1;
+            CBKategory.Text = "Произведение";
+            TBKompos.Focus();
             CBKategory.IsEditable = true;
             BtnDelKompos.Visibility = Visibility.Hidden;
             BtnKomposBack.Visibility = Visibility.Hidden;

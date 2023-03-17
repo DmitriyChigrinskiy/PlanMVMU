@@ -186,7 +186,7 @@ namespace PlanMVMU
             LblStudCourse.Content = students.StudCourse;
             DateSertified = DateSession.AddDays(-7);
 
-            if (DateSertified < Convert.ToDateTime("01.09." + DateTime.Now.Year.ToString()))
+            if (DateSertified < Convert.ToDateTime("01.09." + DateTime.Now.Year.ToString()) && DateSertified > Convert.ToDateTime("01.06." + DateTime.Now.Year.ToString()))
             {
                 DateSertified = Convert.ToDateTime("01.09." + DateTime.Now.Year.ToString());
             }
@@ -211,6 +211,7 @@ namespace PlanMVMU
             {
                 CBKompos3.Text = Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos3).KomposAndName;
             }
+            Properties.Settings.Default.Stop = true;
         }
 
         public void EnabledContent(bool Edit)
@@ -524,7 +525,7 @@ namespace PlanMVMU
             if (WordReplacer.ReplaceWord(items, PathSave, DateSession, students, _fileInfo))
             {
                 _indexList += 1;
-                //bool _check = false;
+                Properties.Settings.Default.Stop = false;
                 for (int i = 0; Properties.Settings.Default.Stop != true; i++)
                 {
                     if (_CheckDayofWeek(DateSession))
