@@ -11,7 +11,7 @@
         MinWidth="800" MinHeight="450"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" 
-        Icon="icons/Icon.ico">
+        Icon="Resources/Icons/Icon.ico">
     
     <Grid Background="#FFD4C7D8">
         <StackPanel Margin="10">

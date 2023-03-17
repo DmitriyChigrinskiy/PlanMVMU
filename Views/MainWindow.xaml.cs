@@ -1,20 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using PlanMVMU.DataBase;
 
 namespace PlanMVMU
 {
@@ -24,7 +15,7 @@ namespace PlanMVMU
     public partial class MainWindow : Window
     {
         PlanEntities Entities = new PlanEntities();
-        int IdPrep = 0;
+        private int IdPrep = 0;
 
         public MainWindow()
         {
@@ -37,7 +28,7 @@ namespace PlanMVMU
             }
             if (Properties.Settings.Default.SaveUrl != "" && Directory.Exists(Properties.Settings.Default.SaveUrl))
             {
-                BtnUrlSave.Background = Brushes.Transparent;
+                BtnSaveSelectedUrl.Background = Brushes.Transparent;
             }
             if (Properties.Settings.Default.StartDate != Convert.ToDateTime("01.01.0001"))
             {
@@ -50,7 +41,7 @@ namespace PlanMVMU
             mainframe.frame = frame;
         }
 
-        private void Select_URLSave(object sender, RoutedEventArgs e)
+        private void SaveSelectedURL(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.InitialDirectory = "";
@@ -62,7 +53,7 @@ namespace PlanMVMU
             if (dlg.ShowDialog() == true)
             {
                 Properties.Settings.Default.SaveUrl = System.IO.Path.GetDirectoryName(dlg.FileName);
-                BtnUrlSave.Background = Brushes.Transparent;
+                BtnSaveSelectedUrl.Background = Brushes.Transparent;
             }
         }
 
@@ -71,7 +62,7 @@ namespace PlanMVMU
             int chk = 0;
             if (Properties.Settings.Default.SaveUrl == "")
             {
-                BtnUrlSave.Background = Brushes.LightCoral;
+                BtnSaveSelectedUrl.Background = Brushes.LightCoral;
                 chk += 1;
             }
             if (Date1.SelectedDate == null)
@@ -170,5 +161,6 @@ namespace PlanMVMU
         {
             Properties.Settings.Default.Save();
         }
+
     }
 }

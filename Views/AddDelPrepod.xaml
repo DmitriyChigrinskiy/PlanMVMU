@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlanMVMU"
         mc:Ignorable="d"
-        Title="Добавление преподавателей" Height="380" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="icons/Icon.ico">
+        Title="Добавление преподавателей" Height="380" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Resources/Icons/Icon.ico">
     <Grid Background="#FFD4C7D8">
         <TextBox x:Name="TBPrepod" Height="32" Margin="10,0,162,65" materialDesign:HintAssist.HelperText="Пример: Хлебников И.А." materialDesign:HintAssist.Hint="Фамилия И.О." VerticalAlignment="Bottom"/>
         <DataGrid x:Name="DGPrepods" Margin="10,10,10,0" SelectionChanged="DGPrepodsSelectionChanged" Height="226" VerticalAlignment="Top" AutoGenerateColumns="False" IsReadOnly="True">

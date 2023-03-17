@@ -7,19 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PlanMVMU
+namespace PlanMVMU.DataBase
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class OriginalText
+    public partial class Kompositors
     {
-        public int ID_OriginalTextCompose { get; set; }
-        public int Stage { get; set; }
-        public string TextCompose { get; set; }
-        public int id_Kategory { get; set; }
-        public Nullable<int> id_Prepodavatel { get; set; }
+        public int ID_Kompos { get; set; }
+        public string KomposAndName { get; set; }
+        public int id_Student { get; set; }
+        public int id_Kat { get; set; }
+        public Nullable<int> LastStage { get; set; }
     
         public virtual Kategorii Kategorii { get; set; }
+        public virtual Students Students { get; set; }
     }
 }

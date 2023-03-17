@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PlanMVMU
+namespace PlanMVMU.DataBase
 {
     using System;
     using System.Collections.Generic;
