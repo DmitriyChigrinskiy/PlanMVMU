@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Globalization;
+using System.Threading;
 
 namespace PlanMVMU
 {
@@ -17,18 +18,20 @@ namespace PlanMVMU
         public App()
         {
         }
-        private void Application_Exit(object sender, ExitEventArgs e)
+
+        protected override void OnExit(ExitEventArgs e)
         {
             PlanMVMU.Properties.Settings.Default.Save();
+            base.OnExit(e);
         }
-        private void Application_Startup(object sender, StartupEventArgs e)
+
+        protected override void OnStartup(StartupEventArgs e)
         {
-            var frFr = new CultureInfo("fr-FR");
-            CultureInfo.DefaultThreadCurrentCulture = frFr;
-            CultureInfo.DefaultThreadCurrentCulture.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
-            CultureInfo.DefaultThreadCurrentCulture.DateTimeFormat.FullDateTimePattern = "dd.MM.yyyy";
-            CultureInfo.DefaultThreadCurrentCulture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
-            
+            Thread.CurrentThread.CurrentCulture = PlanMVMU.Properties.Settings.Default.DefaultLanguage;
+            Thread.CurrentThread.CurrentUICulture = PlanMVMU.Properties.Settings.Default.DefaultLanguage;
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+                            System.Windows.Markup.XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+            base.OnStartup(e);
         }
     }
 }

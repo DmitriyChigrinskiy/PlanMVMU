@@ -13,10 +13,10 @@ namespace PlanMVMU.DataBase
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PlanEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public PlanEntities()
-            : base("name=PlanEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
@@ -25,10 +25,10 @@ namespace PlanMVMU.DataBase
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Kategorii> Kategorii { get; set; }
-        public virtual DbSet<Kompositors> Kompositors { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Composer> Composer { get; set; }
         public virtual DbSet<OriginalText> OriginalText { get; set; }
-        public virtual DbSet<Prepodavateli> Prepodavateli { get; set; }
-        public virtual DbSet<Students> Students { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<Teacher> Teacher { get; set; }
     }
 }

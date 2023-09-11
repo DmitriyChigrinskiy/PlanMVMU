@@ -25,18 +25,6 @@ namespace PlanMVMU.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
-        public global::System.Globalization.CultureInfo DefaultLanguage {
-            get {
-                return ((global::System.Globalization.CultureInfo)(this["DefaultLanguage"]));
-            }
-            set {
-                this["DefaultLanguage"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Раздел №2. Учебный фортепианный репертуар")]
         public string ThemeLesson {
             get {
@@ -200,6 +188,53 @@ namespace PlanMVMU.Properties {
             }
             set {
                 this["Stop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
+        public global::System.Globalization.CultureInfo DefaultLanguage {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["DefaultLanguage"]));
+            }
+            set {
+                this["DefaultLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int AllTimeWorkingProgram {
+            get {
+                return ((int)(this["AllTimeWorkingProgram"]));
+            }
+            set {
+                this["AllTimeWorkingProgram"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AllPlansCreated {
+            get {
+                return ((int)(this["AllPlansCreated"]));
+            }
+            set {
+                this["AllPlansCreated"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AllStartsProgram {
+            get {
+                return ((int)(this["AllStartsProgram"]));
+            }
+            set {
+                this["AllStartsProgram"] = value;
             }
         }
     }

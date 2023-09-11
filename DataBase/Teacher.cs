@@ -12,32 +12,20 @@ namespace PlanMVMU.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Students
+    public partial class Teacher
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Students()
+        public Teacher()
         {
-            this.Kompositors = new HashSet<Kompositors>();
+            this.Student = new HashSet<Student>();
         }
     
-        public int ID_Student { get; set; }
-        public string NameFile { get; set; }
-        public string NameText { get; set; }
-        public string StudGroup { get; set; }
-        public int StudCourse { get; set; }
-        public int id_Prepod { get; set; }
-        public bool Monday { get; set; }
-        public bool Tuesday { get; set; }
-        public bool Wednesday { get; set; }
-        public bool Thursday { get; set; }
-        public bool Friday { get; set; }
-        public bool Saturday { get; set; }
-        public Nullable<int> LastKompos1 { get; set; }
-        public Nullable<int> LastKompos2 { get; set; }
-        public Nullable<int> LastKompos3 { get; set; }
+        public int ID_Teacher { get; set; }
+        public string TeacherName { get; set; }
+        public Nullable<System.DateTime> DateStopCreatePlan { get; set; }
+        public Nullable<int> idLastStudentPlan { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Kompositors> Kompositors { get; set; }
-        public virtual Prepodavateli Prepodavateli { get; set; }
+        public virtual ICollection<Student> Student { get; set; }
     }
 }

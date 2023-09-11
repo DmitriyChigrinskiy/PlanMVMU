@@ -28,10 +28,10 @@
         <DataGrid x:Name="DGStudents" Margin="10,26,10,3" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DGStudents_SelectionChanged" Grid.ColumnSpan="3">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding DayWeek}" Width="1.2*" Header="День недели"/>
-                <DataGridTextColumn Binding="{Binding NameStud}" Width="1.2*" Header="Фамилия студента"/>
-                <DataGridTextColumn Binding="{Binding CourseStud}" Width="1*" Header="Курс"/>
-                <DataGridTextColumn Binding="{Binding KomposStud}" Width="2*" Header="Композитор и изучаемое произведение"/>
-                <DataGridTextColumn Binding="{Binding Kategory}" Width="1*" Header="Категория"/>
+                <DataGridTextColumn Binding="{Binding NameStudent}" Width="1.2*" Header="Фамилия студента"/>
+                <DataGridTextColumn Binding="{Binding CourseStudent}" Width="1*" Header="Курс"/>
+                <DataGridTextColumn Binding="{Binding ComposerStudent}" Width="2*" Header="Композитор и изучаемое произведение"/>
+                <DataGridTextColumn Binding="{Binding Category}" Width="1*" Header="Категория"/>
             </DataGrid.Columns>
         </DataGrid>
         <TextBox x:Name="TBFIOFile" Margin="10,0,13,0" materialDesign:HintAssist.Hint="Фамилия Имя для названия файла" materialDesign:HintAssist.HelperText="Пример: Кудряшов А." VerticalAlignment="Top" Grid.Row="1" Height="30" SelectionChanged="TBFIOFile_SelectionChanged"/>
@@ -55,7 +55,6 @@
         <Button x:Name="BtnClearBoxes" Content="Создать нового" Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,197,0" Grid.Row="2" VerticalAlignment="Top" Width="138" Click="BtnClearBoxes_Click" Visibility="Hidden"/>
         <Button x:Name="BtnDelStud" Content="Удалить студента" HorizontalAlignment="Left" Margin="10,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="164" FontSize="12" Visibility="Hidden" Click="BtnDelStud_Click"/>
         <Button x:Name="BtnEditKategory" Content="Изм." Grid.Column="2" HorizontalAlignment="Right" Margin="0,62,10,0" Grid.Row="1" VerticalAlignment="Top" Width="85" Height="30" Click="BtnEditKategory_Click" Visibility="Hidden"/>
-        <materialDesign:PackIcon Kind="QuestionMarkCircle" Background="#FFD4C7D8" Grid.Column="2" Margin="0,160,10,0" Grid.Row="1" Height="30" Width="30" HorizontalAlignment="Right" />
         <materialDesign:PackIcon Kind="ArrowLeftBold" x:Name="BtnKomposBack" Background="#FFD4C7D8" Grid.Column="2" Margin="3,112,0,0" Grid.Row="1" Height="50" Width="50" MouseDown="BtnKomposBack_MouseDown" Visibility="Hidden"/>
         <materialDesign:PackIcon Kind="ArrowRightBold" x:Name="BtnKomposNext" Background="#FFD4C7D8" Grid.Column="2" Margin="0,112,100,0" Grid.Row="1" Height="50" Width="50" HorizontalAlignment="Right" MouseDown="BtnKomposNext_MouseDown" Visibility="Hidden"/>
     </Grid>

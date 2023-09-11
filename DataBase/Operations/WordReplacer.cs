@@ -10,7 +10,6 @@ namespace PlanMVMU
     class WordReplacer
     {
 
-
         public static void WholeChunks(string str, List<string> Text)
         {
             int stInd = 0;
@@ -36,7 +35,7 @@ namespace PlanMVMU
             }
         }
 
-        internal static bool ReplaceWord(Dictionary<string, string> items, string PathSave, DateTime DateSession, Students students, FileInfo _fileInfo)
+        internal static bool ReplaceWord(Dictionary<string, string> items, string PathSave, DateTime DateSession, Student students, FileInfo _fileInfo)
         {
             Word.Application app = null;
             try
@@ -57,7 +56,7 @@ namespace PlanMVMU
                     FindReplaceWord(wrap, missing, replace, find);
                 }
 
-                PathSave = System.IO.Path.Combine(PathSave, DateSession.ToString("dd.MM.yyyy") + " " + students.NameFile + " " + students.StudGroup + ".docx");
+                PathSave = System.IO.Path.Combine(PathSave, DateSession.ToString("dd.MM.yyyy") + " " + students.NameFile + " " + students.StudentGroup + ".docx");
                 app.ActiveDocument.SaveAs2(PathSave);
 
 

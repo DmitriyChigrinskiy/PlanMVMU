@@ -126,7 +126,7 @@ namespace PlanMVMU
             }
         }
 
-        public static string GetNameDays(Students stud)
+        public static string GetNameDays(Student stud)
         {
             string Days = "";
             for (int i = 0; i <= 5; i++)

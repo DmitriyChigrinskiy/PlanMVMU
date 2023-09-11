@@ -6,100 +6,286 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlanMVMU"
         mc:Ignorable="d"
-        Title="Главное окно"
+        Title="МВМУ планы (Главное окно)"
         Height="700" Width="1300"
         MinHeight="700" MinWidth="1300" 
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Icon="Resources/Icons/Icon.ico"
         Closed="Window_Closed">
-    
+
+    <Window.Resources>
+        <Style x:Key="MyDatePicker" 
+               TargetType="DatePicker" 
+               BasedOn="{StaticResource MaterialDesignDatePicker}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+        </Style>
+        <Style x:Key="MyLabel" 
+               TargetType="Label">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Background" Value="#FFE3D3E8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+        </Style>
+        <Style x:Key="MatherialIcons"
+               TargetType="materialDesign:PackIcon">
+            <Setter Property="Background" Value="#FFE3D3E8"/>
+            <Setter Property="Height" Value="auto"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="LinesBurger"
+               TargetType="Line">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="Y1" Value="40"/>
+            <Setter Property="Y2" Value="40"/>
+            <Setter Property="X1" Value="0"/>
+            <Setter Property="X2" Value="220"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Background="#FFE3D3E8">
-        <Menu VerticalAlignment="Top" 
-              Background="#FFF2E1FB">
-            <MenuItem Header="Добавить" 
-                      FontSize="16">
-                <Button x:Name="AddInfoSh"
-                        Content="Изменить шаблон"
-                        Margin="0,2"
-                        VerticalContentAlignment="Top"
-                        Click="AddInfoSh_Click"/>
-                <Button x:Name="Add_Prepod"
-                        Content="Добавить преподавателя"
-                        Click="BtnAddPrepod"
-                        Margin="0,2"
-                        VerticalContentAlignment="Top"/>
-                <Button x:Name="Add_Students"
-                        Content="Добавить студентов"
-                        Click="BtnAddStudents"
-                        Margin="0,2"
-                        VerticalContentAlignment="Top"/>
-                <Button x:Name="Add_Texts"
-                        Content="Добавить текст"
-                        Click="BtnAddTexts"
-                        Margin="0,2"
-                        VerticalContentAlignment="Top"/>
-            </MenuItem>
-            <MenuItem x:Name="BtnSaveSelectedUrl"
-                      Header="Выберите путь сохранения"
-                      FontSize="16"
-                      Click="SaveSelectedURL"
-                      Background="#FFFFDEDE"/>
-        </Menu>
-        <ComboBox x:Name="CBPrepodavatel"
-                  Margin="0,53,16,0"
-                  VerticalAlignment="Top"
-                  FontSize="16"
-                  HorizontalAlignment="Right"
-                  Width="234"
-                  DisplayMemberPath="Name"
-                  SelectionChanged="CBPrepodavatel_SelectionChanged"/>
-        <Label Content="Выберите преподавателя:"
-               Margin="0,53,255,0"
-               VerticalAlignment="Top"
-               FontSize="16"
-               HorizontalAlignment="Right"
-               Width="201"/>
-        <Label Content="Выберите дату начала &#xA;планов (включительно)"
-               HorizontalAlignment="Left"
-               Margin="15,73,0,0"
-               VerticalAlignment="Top"
-               Height="50"
-               Width="200"
-               FontSize="16"/>
-        <DatePicker x:Name="Date1"
-                    HorizontalAlignment="Left"
-                    Margin="213,73,0,0"
-                    VerticalAlignment="Top"
-                    Width="158"
-                    Height="40"
-                    SelectedDateChanged="Date1_SelectedDateChanged"
-                    FontSize="16"
-                    SelectedDate="09.01.2022"/>
-        <Label Content="Выберите дату окончания &#xA;планов (включительно)"
-               HorizontalAlignment="Left"
-               Margin="13,161,0,0"
-               VerticalAlignment="Top"
-               Height="51"
-               Width="200"
-               FontSize="16"/>
-        <DatePicker x:Name="Date2"
-                    HorizontalAlignment="Left"
-                    Margin="213,161,0,0"
-                    VerticalAlignment="Top"
-                    Width="158"
-                    Height="40"
-                    SelectedDateChanged="Date2_SelectedDateChanged"
-                    FontSize="16"/>
-        <Button x:Name="CreatePlans"
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" x:Name="MenuBurger"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid 
+            Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="15"/>
+            </Grid.RowDefinitions>
+            <Label 
+                Content="МВМУ планы" 
+                Foreground="#FFD101FF"
+                FontSize="24"
+                HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center"
+                FontFamily="Georgia"
+                ToolTip="Сведения о разработчике"
+                MouseDown="Label_MouseDown"/>
+            <materialDesign:PackIcon 
+                Kind="HamburgerMenu"
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Меню"
+                Grid.Column="1"
+                Grid.Row="0"
+                MouseDown="PackIcon_MouseDown"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"/>
+            <Label
+                x:Name="LblSelectURL"
+                Content="Путь сохранения"
+                Style="{StaticResource MyLabel}"
+                Grid.Row="1"
+                MouseDown="SaveSelectedURL"/>
+            <materialDesign:PackIcon 
+                x:Name="IconSelectURL"
+                Kind="FolderEdit" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Выбрать путь сохранения"
+                Grid.Column="1" 
+                Grid.Row="1"
+                MouseDown="SaveSelectedURL"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"/>
+            <Label
+                Style="{StaticResource MyLabel}"
+                Grid.Row="2"
+                Content="Преподаватели"
+                MouseDown="BtnAddTeacher"/>
+            <materialDesign:PackIcon 
+                Kind="AccountEdit" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Редактировать преподавателей"
+                Grid.Column="1" 
+                Grid.Row="2"
+                MouseDown="BtnAddTeacher"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"/>
+            <Label
+                Style="{StaticResource MyLabel}"
+                Grid.Row="3"
+                Content="Студенты"
+                MouseDown="BtnAddStudents"/>
+            <materialDesign:PackIcon 
+                Kind="AccountMultiplePlus" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Редактировать студентов"
+                Grid.Column="1" 
+                Grid.Row="3"
+                MouseDown="BtnAddStudents"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"/>
+            <Label
+                Style="{StaticResource MyLabel}"
+                Grid.Row="4"
+                Content="Тексты"
+                MouseDown="BtnAddTexts"/>
+            <materialDesign:PackIcon 
+                Kind="Text" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Редактировать тексты"
+                Grid.Column="1" 
+                Grid.Row="4"
+                MouseDown="BtnAddTexts"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="4"
+                Grid.ColumnSpan="2"/>
+            <Label
+                Style="{StaticResource MyLabel}"
+                Grid.Row="5"
+                Content="Шаблон"
+                MouseDown="AddInfoSh_Click"/>
+            <materialDesign:PackIcon 
+                Kind="ClipboardText" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Редактировать шаблон"
+                Grid.Column="1" 
+                Grid.Row="5"
+                MouseDown="AddInfoSh_Click"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="5"
+                Grid.ColumnSpan="2"/>
+            <Label
+                Style="{StaticResource MyLabel}"         
+                Content="Статистика"
+                Grid.Row="6"
+                MouseDown="ShowWindowStatistics_MouseDown"/>
+            <materialDesign:PackIcon 
+                Kind="ChartHistogram" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Просмотреть статистику использования программы"
+                Grid.Column="1" 
+                Grid.Row="6"
+                MouseDown="ShowWindowStatistics_MouseDown"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="6"
+                Grid.ColumnSpan="2"/>
+            <ComboBox 
+                x:Name="CBTeacher"
+                Grid.Row="8"
+                Margin="10,0,0,0"
+                materialDesign:HintAssist.Hint="Преподаватель"
+                ToolTip="Выберите преподавателя"
+                FontSize="18"
+                Foreground="Black"
+                FontFamily="Times New Roman"
+                DisplayMemberPath="TeacherName"
+                SelectionChanged="CBTeacher_SelectionChanged"/>
+            <materialDesign:PackIcon 
+                x:Name="IconTeacher"
+                Kind="AccountCircleOutline" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip=""
+                Grid.Column="1" 
+                Grid.Row="8"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="8"
+                Grid.ColumnSpan="2"/>
+            <DatePicker 
+                x:Name="Date1"
+                Grid.Row="9"
+                ToolTip="Введите дату начала планов"
+                Style="{StaticResource MyDatePicker}"
+                SelectedDateChanged="Date1_SelectedDateChanged"
+                materialDesign:HintAssist.Hint="Дата начала"/>
+            <materialDesign:PackIcon 
+                x:Name="IconDateStart"
+                Kind="DateRange" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip=""
+                Grid.Column="1" 
+                Grid.Row="9"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="9"
+                Grid.ColumnSpan="2"/>
+            <DatePicker 
+                x:Name="Date2"
+                Grid.Row="10"
+                ToolTip="Введите дату окончания планов"
+                Style="{StaticResource MyDatePicker}"
+                SelectedDateChanged="Date2_SelectedDateChanged"
+                materialDesign:HintAssist.Hint="Дата окончания"/>
+            <materialDesign:PackIcon 
+                x:Name="IconDateFinal"
+                Kind="DateRange" 
+                Style="{StaticResource MatherialIcons}"
+                ToolTip=""
+                Grid.Column="1" 
+                Grid.Row="10"/>
+            <Line 
+                Style="{StaticResource LinesBurger}"
+                Grid.Row="10"
+                Grid.ColumnSpan="2"/>
+            <Button 
+                x:Name="CreatePlans"
+                FontSize="18"
+                FontFamily="Times New Roman"
+                Grid.Row="11"
+                Margin="10,0,5,0"
                 Content="Создать планы"
-                HorizontalAlignment="Right"
-                Margin="0,0,36,33"
-                VerticalAlignment="Bottom"
-                Width="141"
+                ToolTip="Запустить процесс создания планов"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
                 Click="CreatePlans_Click"/>
-        <Frame x:Name="frame"
-               Margin="406,91,10,87"
-               NavigationUIVisibility="Hidden"/>
+            <materialDesign:PackIcon
+                x:Name="IconCreatePlans"
+                Kind="Briefcase"
+                Style="{StaticResource MatherialIcons}"
+                ToolTip="Запустить процесс создания планов"
+                Grid.Column="1"
+                Grid.Row="11"
+                MouseDown="CreatePlans_Click"/>
+        </Grid>
+        <Border 
+            BorderBrush="Black"
+            Background="#FFFFF5F5"
+            Padding="4"
+            BorderThickness="1"
+            CornerRadius="10"
+            Margin="10"
+            Grid.Column="1">
+            <Frame 
+                x:Name="frame"
+                Background="#FFFFF5F5"
+                NavigationUIVisibility="Hidden"/>
+        </Border>
     </Grid>
 </Window>

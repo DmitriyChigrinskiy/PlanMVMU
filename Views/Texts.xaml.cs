@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Globalization;
-using System.Threading;
 using PlanMVMU.DataBase;
+using PlanMVMU.DataBase.Operations;
 
 namespace PlanMVMU
 {
@@ -22,137 +14,129 @@ namespace PlanMVMU
     /// </summary>
     public partial class Texts : Window
     {
-        PlanEntities Entities = new PlanEntities();
-        private int SelectedText = 0;
-        private int SelectedKategory = 0;
-        private int SelectedStage = 0;
-        private int idPrepod;
-        List<int> stages = new List<int>(20) { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+        #region Variables
+        private Entities Entities;
+        private int _selectedText = 0;
+        private int _selectedCategory = 0;
+        private int _selectedStage = 0;
+        private int idTeacher;
+        private int stagesLength = 20;
+        private List<int> stages = new List<int>();
+        #endregion
 
-        public Texts(int _idPrepod)
+        public Texts(int _idTeacher, Entities entities)
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-Ru");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-Ru");
             InitializeComponent();
-            CBKategory.ItemsSource = Entities.Kategorii.ToList();
+            Entities = entities;
+            CBCategory.ItemsSource = Entities.Category.ToList();
+            idTeacher = _idTeacher;
+            for (int i = 1; i <= stagesLength; i++)
+                stages.Add(i);
             CBStage.ItemsSource = stages.ToList();
-            idPrepod = _idPrepod;
         }
 
-        private void BtnSaveText_Click(object sender, RoutedEventArgs e)
+        private bool checkData()
         {
-            if (TBText.Text != "" && (Kategorii)CBKategory.SelectedItem != null && CBStage.Text != "")
-            {
-                OriginalText originalText = new OriginalText()
-                {
-                    TextCompose = TBText.Text,
-                    Stage = Convert.ToInt32(CBStage.Text),
-                    id_Kategory = ((Kategorii)CBKategory.SelectedItem).ID_Kategoriya,
-                    id_Prepodavatel = idPrepod
-                };
-                Entities.OriginalText.Add(originalText);
-                Entities.SaveChanges();
-
-                BtnDelText.Visibility = Visibility.Visible;
-                BtnEditText.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MessageBox.Show("Введите данные", "Предупреждение");
-            }
+            bool _cbStageSelected = _selectedStage != 0;
+            bool _cbCategorySelected = _selectedCategory != 0;
+            bool _tbTextWrite = TBText.Text != "";
+            return _cbStageSelected && _cbCategorySelected && _tbTextWrite;
         }
 
-        private void CBKategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CBCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Convert.ToString(BtnEditText.Content) == "Изменить (категорию/этап/текст)")
+            BtnEditText.Visibility = Visibility.Hidden;
+            if ((Category)CBCategory.SelectedItem != null)
             {
-                SelectText(CBKategory, CBStage);
+                _selectedCategory = ((Category)CBCategory.SelectedItem).ID_Category;
+                if (CBStage.SelectedIndex > -1)
+                    SelectText();
             }
         }
 
         private void CBStage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Convert.ToString(BtnEditText.Content) == "Изменить (категорию/этап/текст)")
+            BtnEditText.Visibility = Visibility.Hidden;
+            if (CBStage.SelectedIndex > -1)
             {
-                SelectedStage = Convert.ToInt32(CBStage.Items.GetItemAt(CBStage.SelectedIndex).ToString());
-                SelectText(CBKategory, CBStage);
+                _selectedStage = int.Parse(CBStage.SelectedItem.ToString());
+                if ((Category)CBCategory.SelectedItem != null)
+                    SelectText();
             }
         }
 
-        private void SelectText(ComboBox kateg, ComboBox stg)
+        private void SelectText()
         {
-            if ((Kategorii)CBKategory.SelectedItem != null)
+            OriginalText text = Entities.OriginalText.FirstOrDefault(t => t.id_Category == _selectedCategory && t.Stage == _selectedStage && t.id_Teacher == idTeacher);
+            if (text != default)
             {
-                SelectedKategory = ((Kategorii)CBKategory.SelectedItem).ID_Kategoriya;
+                BtnSaveText.Visibility = Visibility.Hidden;
+                BtnEditText.Visibility = Visibility.Hidden;
+                BtnDelText.Visibility = Visibility.Visible;
+                TBText.Text = text.Text;
+                _selectedText = text.ID_OriginalText;
             }
             else
             {
-                SelectedKategory = 0;
                 TBText.Text = "";
+                _selectedText = 0;
                 BtnDelText.Visibility = Visibility.Hidden;
                 BtnEditText.Visibility = Visibility.Hidden;
-                SelectedText = 0;
             }
-            if (CBStage.SelectedIndex != -1)
-            {
+        }
 
-                OriginalText text = Entities.OriginalText.Where(t => t.id_Kategory == SelectedKategory && t.Stage == SelectedStage && t.id_Prepodavatel == idPrepod).FirstOrDefault();
-                if (text != default)
+        private void BtnSaveText_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkData())
+            {
+                if (TextOperations.AddText(TBText.Text, _selectedStage, _selectedCategory, idTeacher, Entities))
                 {
-                    TBText.Text = text.TextCompose;
-                    SelectedText = text.ID_OriginalTextCompose;
-                    BtnDelText.Visibility = Visibility.Visible;
-                    BtnEditText.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    TBText.Text = "";
-                    BtnDelText.Visibility = Visibility.Hidden;
-                    BtnEditText.Visibility = Visibility.Hidden;
-                    SelectedText = 0;
+                    SelectText();
                 }
             }
             else
-            {
-                TBText.Text = "";
-                BtnDelText.Visibility = Visibility.Hidden;
-                BtnEditText.Visibility = Visibility.Hidden;
-                SelectedText = 0;
-            }
+                MessageBox.Show("Данные не введены.", "Предупреждение");
         }
 
         private void BtnEditText_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedText != 0 && Convert.ToString(BtnEditText.Content) == "Изменить (категорию/этап/текст)")
+            if (_selectedText != 0 && checkData())
             {
-                
-                BtnEditText.Content = "Сохранить изменения";
+                if (TextOperations.EditText(_selectedText, TBText.Text, _selectedStage, _selectedCategory, idTeacher, Entities))
+                {
+                    SelectText();
+                }
             }
-            else if (SelectedText != 0 && Convert.ToString(BtnEditText.Content) == "Сохранить изменения")
-            {
-                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.ID_OriginalTextCompose == SelectedText);
-                originalText.id_Kategory = ((Kategorii)CBKategory.SelectedItem).ID_Kategoriya;
-                originalText.Stage = Convert.ToInt32(CBStage.Items.GetItemAt(CBStage.SelectedIndex).ToString());
-                originalText.TextCompose = TBText.Text;
-                Entities.SaveChanges();
-                BtnEditText.Content = "Изменить (категорию/этап/текст)";
-            }
+            else
+                MessageBox.Show("Соблюдены не все условия.", "Предупреждение", MessageBoxButton.OK);
         }
 
         private void BtnDelText_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Действительно удалить данный этап с текстом?", "Подтверждение",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (_selectedText != 0 && checkData())
             {
-                OriginalText txt = Entities.OriginalText.Where(t => t.id_Kategory == SelectedKategory && t.Stage == SelectedStage).FirstOrDefault();
-                if (txt != default)
+                if (TextOperations.DeleteText(_selectedText, Entities))
                 {
-                    Entities.OriginalText.Remove(txt);
-                    Entities.SaveChanges();
-                    BtnDelText.Visibility = Visibility.Hidden;
-                    BtnEditText.Visibility = Visibility.Hidden;
-                    TBText.Text = "";
-                    MessageBox.Show("Данный этап удалён");
+                    SelectText();
                 }
+            }
+        }
+
+        private void TBText_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (BtnEditText.Visibility == Visibility.Hidden && _selectedText != 0)
+            {
+                BtnEditText.Visibility = Visibility.Visible;
+            }
+            else if (_selectedText == 0 && _selectedCategory != 0 && _selectedStage != 0)
+            {
+                BtnEditText.Visibility = Visibility.Hidden;
+                BtnSaveText.Visibility = Visibility.Visible;
+            }
+            if (TBText.Text == "")
+            {
+                BtnSaveText.Visibility = Visibility.Hidden;
+                BtnEditText.Visibility = Visibility.Hidden;
             }
         }
     }

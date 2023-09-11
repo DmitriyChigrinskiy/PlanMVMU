@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PlanMVMU"
         mc:Ignorable="d"
-        Title="Добавление текста" 
+        Title="Редактирование текста" 
         Height="450" Width="800"
         MinWidth="800" MinHeight="450"
         WindowStartupLocation="CenterScreen"
@@ -16,19 +16,19 @@
     <Grid Background="#FFD4C7D8">
         <StackPanel Margin="10">
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="CBKategory" 
-                          DisplayMemberPath="NameKategory" 
+                <ComboBox x:Name="CBCategory" 
+                          DisplayMemberPath="NameCategory" 
                           materialDesign:HintAssist.Hint="Выберите категорию" 
                           FontSize="14" 
                           Width="160" 
-                          materialDesign:ShadowAssist.ShadowDepth="Depth3" 
-                          SelectionChanged="CBKategory_SelectionChanged"/>
+                          materialDesign:ElevationAssist.Elevation="Dp3" 
+                          SelectionChanged="CBCategory_SelectionChanged"/>
                 <ComboBox x:Name="CBStage" 
                           materialDesign:HintAssist.Hint="Выберите этап" 
                           FontSize="14" 
                           Width="115" 
                           Margin="20,0,0,0"
-                          materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                          materialDesign:ElevationAssist.Elevation="Dp3"
                           SelectionChanged="CBStage_SelectionChanged"/>
             </StackPanel>
             <TextBox x:Name="TBText"
@@ -41,24 +41,25 @@
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      VerticalScrollBarVisibility="Auto"
-                     materialDesign:HintAssist.Hint="Выбрав категорию и этап, введите или вставьте скопированный текст и нажмите сохранить" />
+                     materialDesign:HintAssist.Hint="Выбрав категорию и этап, введите или вставьте скопированный текст и нажмите сохранить" KeyUp="TBText_KeyUp" />
             <StackPanel Orientation="Horizontal"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        materialDesign:ElevationAssist.Elevation="Dp3">
                 <Button x:Name="BtnSaveText"
                         Content="Сохранить текст"
                         Width="150"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        materialDesign:ElevationAssist.Elevation="Dp3"
                         Margin="5"
+                        Visibility="Hidden"
                         Click="BtnSaveText_Click"/>
                 <Button x:Name="BtnEditText"
-                        Content="Изменить (категорию/этап/текст)"
-                        Margin="80,0" materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        Content="Сохранить изменения"
+                        Margin="80,0" materialDesign:ElevationAssist.Elevation="Dp3"
                         Width="260"
                         Visibility="Hidden"
                         Click="BtnEditText_Click"/>
                 <Button x:Name="BtnDelText"
-                        Content="Удалить текст из этапа"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        Content="Удалить текст"
+                        materialDesign:ElevationAssist.Elevation="Dp3"
                         Width="183"
                         Margin="5"
                         Visibility="Hidden"

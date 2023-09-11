@@ -14,12 +14,12 @@ namespace PlanMVMU.DataBase
     
     public partial class OriginalText
     {
-        public int ID_OriginalTextCompose { get; set; }
+        public int ID_OriginalText { get; set; }
         public int Stage { get; set; }
-        public string TextCompose { get; set; }
-        public int id_Kategory { get; set; }
-        public Nullable<int> id_Prepodavatel { get; set; }
+        public string Text { get; set; }
+        public int id_Category { get; set; }
+        public Nullable<int> id_Teacher { get; set; }
     
-        public virtual Kategorii Kategorii { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

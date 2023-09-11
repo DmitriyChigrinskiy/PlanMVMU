@@ -12,20 +12,21 @@ namespace PlanMVMU.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Prepodavateli
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Prepodavateli()
+        public Category()
         {
-            this.Students = new HashSet<Students>();
+            this.Composer = new HashSet<Composer>();
+            this.OriginalText = new HashSet<OriginalText>();
         }
     
-        public int ID_Prepodavatel { get; set; }
-        public string Name { get; set; }
-        public Nullable<System.DateTime> DateStop { get; set; }
-        public Nullable<int> idLastStudentPlan { get; set; }
+        public int ID_Category { get; set; }
+        public string NameCategory { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Students> Students { get; set; }
+        public virtual ICollection<Composer> Composer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OriginalText> OriginalText { get; set; }
     }
 }

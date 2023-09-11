@@ -53,7 +53,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationManifest>Views\Resources\app.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Views\Resources\Icons\Icon.ico</ApplicationIcon>
@@ -65,16 +65,20 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=2.0.9.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignColors.2.0.9\lib\net462\MaterialDesignColors.dll</HintPath>
+    <Reference Include="MaterialDesignColors, Version=2.1.4.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignColors.2.1.4\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=4.6.1.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignThemes.4.6.1\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.9.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignThemes.4.9.0\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -95,27 +99,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataBase\Operations\Operations.cs" />
-    <Compile Include="Views\AddDelPrepod.xaml.cs">
-      <DependentUpon>AddDelPrepod.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddDelStudents.xaml.cs">
-      <DependentUpon>AddDelStudents.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddInfoShablon.xaml.cs">
-      <DependentUpon>AddInfoShablon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CreateOptionalPlan.xaml.cs">
-      <DependentUpon>CreateOptionalPlan.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GetMonthName.cs" />
-    <Compile Include="DataBase\Kategorii.cs">
+    <Compile Include="DataBase\Category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\Kompositors.cs">
+    <Compile Include="DataBase\Composer.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="mainframe.cs" />
     <Compile Include="DataBase\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,20 +120,45 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataBase\Operations\CategoryOperations.cs" />
+    <Compile Include="DataBase\Operations\Checks.cs" />
+    <Compile Include="DataBase\Operations\Class1.cs" />
+    <Compile Include="DataBase\Operations\ComposerOperations.cs" />
+    <Compile Include="DataBase\Operations\StudentOperations.cs" />
+    <Compile Include="DataBase\Operations\TeacherOperations.cs" />
+    <Compile Include="DataBase\Operations\TextOperations.cs" />
     <Compile Include="DataBase\OriginalText.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\Prepodavateli.cs">
+    <Compile Include="DataBase\Student.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\Students.cs">
+    <Compile Include="DataBase\Teacher.cs">
       <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Logs\CreateLogs.cs" />
+    <Compile Include="Views\AddDelTeacher.xaml.cs">
+      <DependentUpon>AddDelTeacher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddDelStudents.xaml.cs">
+      <DependentUpon>AddDelStudents.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddInfoShablon.xaml.cs">
+      <DependentUpon>AddInfoShablon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateOptionalPlan.xaml.cs">
+      <DependentUpon>CreateOptionalPlan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Operations\GetMonthName.cs" />
+    <Compile Include="DataBase\Operations\mainframe.cs" />
+    <Compile Include="Views\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Texts.xaml.cs">
       <DependentUpon>Texts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WordReplacer.cs" />
-    <Page Include="Views\AddDelPrepod.xaml">
+    <Compile Include="DataBase\Operations\WordReplacer.cs" />
+    <Page Include="Views\AddDelTeacher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,37 +186,58 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Styles\Buttons.xaml">
+    <Content Include="Styles\Buttons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Colors.xaml">
+    </Content>
+    <Content Include="Styles\Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\ContentControls.xaml">
+    </Content>
+    <Content Include="Styles\ContentControls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Defaults.xaml">
+    </Content>
+    <Content Include="Styles\Defaults.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Fonts.xaml">
+    </Content>
+    <Content Include="Styles\Fonts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Icons.xaml">
+    </Content>
+    <Content Include="Styles\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Texts.xaml">
+    </Content>
+    <Content Include="DataBase\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataBase\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataBase\DB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataBase\DB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>DB.mdf</DependentUpon>
+    </Content>
+    <Content Include="Styles\Texts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\UserControl.xaml">
+    </Content>
+    <Content Include="Styles\UserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Content>
+    <Page Include="Views\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Texts.xaml">
       <SubType>Designer</SubType>
@@ -223,24 +258,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="DataBase\DB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataBase\DB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\Resources\Icons\Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataBase\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="DataBase\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
     <SplashScreen Include="Views\Resources\Icons\Splash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -248,6 +267,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EntityDeploy Include="DataBase\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -261,7 +281,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Views\Resources\app.manifest" />
+    <None Include="app.manifest" />
     <None Include="Views\Resources\PlanTemplates\PlanTemplates3.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -321,11 +341,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets')" />
+  <Import Project="packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets'))" />
+    <Error Condition="!Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets'))" />
   </Target>
 </Project>

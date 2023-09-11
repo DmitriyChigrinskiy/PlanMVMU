@@ -6,37 +6,69 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using PlanMVMU.DataBase;
+using PlanMVMU.Views;
+using System.Timers;
+using Set = PlanMVMU.Properties.Settings;
+using System.Threading.Tasks;
 
 namespace PlanMVMU
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        PlanEntities Entities = new PlanEntities();
-        private int IdPrep = 0;
+        Timer timer;
+        Entities Entities = new Entities();
+
+        int timerSetInterval = 10;
+        private bool Burger = true;
+        private int _idTeacher = 0;
+
+        private void Timer(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                Set.Default.AllTimeWorkingProgram += timerSetInterval;
+            }
+            catch (Exception ex)
+            {
+                Logs.CreateLogs.CreateLog("Главное окно", ex.Message, "Таймер");
+            }
+        }
+
+        private void startTimer()
+        {
+            timer = new Timer(timerSetInterval * 1000);
+            timer.Elapsed += Timer;
+            timer.Start();
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-            int prepod = Properties.Settings.Default.Prepodavatel;
-            CBPrepodavatel.ItemsSource = Entities.Prepodavateli.ToList();
-            if (Entities.Prepodavateli.FirstOrDefault(t=>t.ID_Prepodavatel == prepod) != default)
+            startTimer();
+            Set.Default.AllStartsProgram += 1;
+            int teacher = Set.Default.Prepodavatel;
+            CBTeacher.ItemsSource = Entities.Teacher.ToList();
+            if (Entities.Teacher.FirstOrDefault(t => t.ID_Teacher == teacher) != default)
             {
-                CBPrepodavatel.Text = Entities.Prepodavateli.FirstOrDefault(t=>t.ID_Prepodavatel == prepod).Name;
+                CBTeacher.Text = Entities.Teacher.FirstOrDefault(t => t.ID_Teacher == teacher).TeacherName;
+                _idTeacher = teacher;
             }
-            if (Properties.Settings.Default.SaveUrl != "" && Directory.Exists(Properties.Settings.Default.SaveUrl))
+            else
+                Set.Default.Prepodavatel = 0;
+            if (Set.Default.SaveUrl == "" || !Directory.Exists(Set.Default.SaveUrl))
             {
-                BtnSaveSelectedUrl.Background = Brushes.Transparent;
+                IconSelectURL.Foreground = Brushes.Red;
+                LblSelectURL.Foreground = Brushes.Red;
             }
-            if (Properties.Settings.Default.StartDate != Convert.ToDateTime("01.01.0001"))
+            else
+                IconSelectURL.ToolTip = "Путь сохранения: " + Set.Default.SaveUrl;
+            if (Set.Default.StartDate != Convert.ToDateTime("01.01.0001"))
             {
-                Date1.SelectedDate = Properties.Settings.Default.StartDate;
+                Date1.SelectedDate = Set.Default.StartDate;
             }
-            if (Properties.Settings.Default.StopDate != Convert.ToDateTime("01.01.0001"))
+            if (Set.Default.StopDate != Convert.ToDateTime("01.01.0001"))
             {
-                Date2.SelectedDate = Properties.Settings.Default.StopDate;
+                Date2.SelectedDate = Set.Default.StopDate;
             }
             mainframe.frame = frame;
         }
@@ -52,103 +84,140 @@ namespace PlanMVMU
 
             if (dlg.ShowDialog() == true)
             {
-                Properties.Settings.Default.SaveUrl = System.IO.Path.GetDirectoryName(dlg.FileName);
-                BtnSaveSelectedUrl.Background = Brushes.Transparent;
+                Set.Default.SaveUrl = Path.GetDirectoryName(dlg.FileName);
+                IconSelectURL.ToolTip = Set.Default.SaveUrl;
+                LblSelectURL.Foreground = Brushes.Black;
+                IconSelectURL.Foreground = Brushes.Black;
             }
         }
 
         private bool Check()
         {
-            int chk = 0;
-            if (Properties.Settings.Default.SaveUrl == "")
+            bool check = true;
+            if (Set.Default.SaveUrl == "")
             {
-                BtnSaveSelectedUrl.Background = Brushes.LightCoral;
-                chk += 1;
+                LblSelectURL.Foreground = Brushes.Red;
+                IconSelectURL.Foreground = Brushes.Red;
+                check = false;
             }
             if (Date1.SelectedDate == null)
             {
-                Date1.Background = Brushes.LightCoral;
-                chk += 1;
+                Date1.Foreground = Brushes.Red;
+                IconDateStart.Foreground = Brushes.Red;
+                check = false;
             }
             if (Date2.SelectedDate == null)
             {
-                Date2.Background = Brushes.LightCoral;
-                chk += 1;
+                Date2.Foreground = Brushes.Red;
+                IconDateFinal.Foreground = Brushes.Red;
+                check = false;
             }
-            if (CBPrepodavatel.SelectedItem == null)
+            if (CBTeacher.SelectedItem == null)
             {
-                CBPrepodavatel.Background = Brushes.LightCoral;
-                chk += 1;
+                CBTeacher.Foreground = Brushes.Red;
+                IconTeacher.Foreground = Brushes.Red;
+                check = false;
             }
-            return chk == 0 ? true: false;
+            return check;
         }
 
         private void CreatePlans_Click(object sender, RoutedEventArgs e)
         {
             if (Check())
             {
-                if (Entities.Students.Where(t=>t.id_Prepod == IdPrep).Count() <= 0)
+                if (Entities.Student.Where(t=>t.id_Teacher == _idTeacher).Count() <= 0)
                 {
                     MessageBox.Show("Нет добавленных студентов для данного преподавателя", "Предупреждение");
                     return;
                 }
-                DateTime dt1 = Convert.ToDateTime(Date1.SelectedDate);
-                DateTime dt2 = Convert.ToDateTime(Date2.SelectedDate);
-
-                string pathString = System.IO.Path.Combine(Properties.Settings.Default.SaveUrl, ((Prepodavateli)CBPrepodavatel.SelectedItem).Name);
+                DateTime dt1 = (Date1.SelectedDate).Value;
+                DateTime dt2 = (Date2.SelectedDate).Value;
+                string pathString = Path.Combine(Set.Default.SaveUrl, ((Teacher)CBTeacher.SelectedItem).TeacherName);
                 Directory.CreateDirectory(pathString);
-                Properties.Settings.Default.Stop = false;
-
-                frame.Content = new CreateOptionalPlan(true, dt1, dt2, (Prepodavateli)CBPrepodavatel.SelectedItem, pathString);
+                Set.Default.Stop = false;
+                frame.Content = new CreateOptionalPlan(true, dt1, dt2, (Teacher)CBTeacher.SelectedItem, pathString);
             }
             else
             {
-                MessageBox.Show("Выберите путь сохранения файлов и даты","Предупреждение");
+                MessageBox.Show("Для создания планов добавьте/выберите необходимые данные","Предупреждение");
             }
         }
 
         private void Date1_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            Date1.Background = Brushes.Transparent;
+            if (Date1.SelectedDate > Date2.SelectedDate)
+            {
+                Date2.SelectedDate = Date1.SelectedDate;
+            }
+            Date1.Foreground = Brushes.Black;
+            IconDateStart.Foreground = Brushes.Black;
+            IconDateStart.ToolTip = (object)"Дата начала планов - " + Date1.SelectedDate.Value.ToString("d");
         }
 
         private void Date2_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            Date2 .Background = Brushes.Transparent;
+            if (Date2.SelectedDate < Date1.SelectedDate)
+            {
+                Date1.SelectedDate = Date2.SelectedDate;
+            }
+            Date2.Foreground = Brushes.Black;
+            IconDateFinal.Foreground = Brushes.Black;
+            IconDateFinal.ToolTip = (object)"Дата окончания планов - " + Date2.SelectedDate.Value.ToString("d");
         }
 
-        private void CBPrepodavatel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CBTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CBPrepodavatel.Background = Brushes.Transparent;
-            IdPrep = ((Prepodavateli)CBPrepodavatel.SelectedItem).ID_Prepodavatel;
-            Properties.Settings.Default.Prepodavatel = IdPrep;
+            if ((Teacher)CBTeacher.SelectedItem != null)
+            {
+                CBTeacher.Foreground = Brushes.Black;
+                IconTeacher.Foreground = Brushes.Black;
+                _idTeacher = ((Teacher)CBTeacher.SelectedItem).ID_Teacher;
+                Set.Default.Prepodavatel = _idTeacher;
+                IconTeacher.ToolTip = "Выбран преподаватель: " + ((Teacher)CBTeacher.SelectedItem).TeacherName;
+            }
+            else
+            {
+                _idTeacher = 0;
+                IconTeacher.ToolTip = "Выберите преподавателя";
+            }
         }
 
-        private void BtnAddPrepod(object sender, RoutedEventArgs e)
+        private void BtnAddTeacher(object sender, RoutedEventArgs e)
         {
-            AddDelPrepod addDelPrepod = new AddDelPrepod();
+            AddDelTeacher addDelPrepod = new AddDelTeacher(Entities);
             addDelPrepod.ShowDialog();
-            CBPrepodavatel.ItemsSource = Entities.Prepodavateli.ToList();
-            CBPrepodavatel.Items.Refresh();
+            CBTeacher.Items.Refresh();
+            CBTeacher.SelectedIndex = -1;
         }
 
         private void BtnAddStudents(object sender, RoutedEventArgs e)
         {
-            if (CBPrepodavatel.SelectedIndex != -1)
+            if (_idTeacher != 0)
             {
-                AddDelStudents addDelStudents = new AddDelStudents((Prepodavateli)CBPrepodavatel.SelectedItem);
+                AddDelStudents addDelStudents = new AddDelStudents((Teacher)CBTeacher.SelectedItem);
                 addDelStudents.ShowDialog();
             }
             else
             {
-                MessageBox.Show("Для добавления студентов выберите преподавателя, из выпадающего списка, в верхнем правом углу", "Предупреждение");
+                IconTeacher.Foreground = Brushes.Red;
+                CBTeacher.Foreground = Brushes.Red;
+                MessageBox.Show("Для добавления студентов выберите преподавателя, из выпадающего списка ниже.", "Предупреждение");
             }
         }
 
         private void BtnAddTexts(object sender, RoutedEventArgs e)
         {
-            Texts texts = new Texts(IdPrep);
-            texts.ShowDialog();
+            if (_idTeacher != 0)
+            {
+                Texts texts = new Texts(_idTeacher, Entities);
+                texts.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Выберите преподавателя для добавления текста", "Предупреждение");
+                CBTeacher.Foreground = Brushes.Red;
+                IconTeacher.Foreground = Brushes.Red;
+            }
         }
 
         private void AddInfoSh_Click(object sender, RoutedEventArgs e)
@@ -159,8 +228,37 @@ namespace PlanMVMU
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            timer.Stop();
+            Set.Default.Save();
         }
 
+        private void PackIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!Burger)
+            {
+                MenuBurger.Width = new GridLength(220);
+                Burger = true;
+            }
+            else
+            {
+                MenuBurger.Width = new GridLength(40);
+                Burger = false;
+            }
+        }
+
+        private void Label_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Программное обеспечение МВМУ Планы v.1.0 2022-2023.\n" +
+                "Разработчик - Чигринский Д.В.\n" +
+                "Контакты для связи:\n" +
+                "e-mail: dimkoo.arm@gmail.com\n" +
+                "моб. телефон: +7(977)548-28-70","МВМУ Планы");
+        }
+
+        private void ShowWindowStatistics_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Statistics statistics = new Statistics();
+            statistics.ShowDialog();
+        }
     }
 }

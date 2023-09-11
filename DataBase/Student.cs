@@ -12,21 +12,32 @@ namespace PlanMVMU.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Kategorii
+    public partial class Student
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Kategorii()
+        public Student()
         {
-            this.Kompositors = new HashSet<Kompositors>();
-            this.OriginalText = new HashSet<OriginalText>();
+            this.Composer = new HashSet<Composer>();
         }
     
-        public int ID_Kategoriya { get; set; }
-        public string NameKategory { get; set; }
+        public int ID_Student { get; set; }
+        public string NameFile { get; set; }
+        public string NameText { get; set; }
+        public string StudentGroup { get; set; }
+        public int StudentCourse { get; set; }
+        public int id_Teacher { get; set; }
+        public bool Monday { get; set; }
+        public bool Tuesday { get; set; }
+        public bool Wednesday { get; set; }
+        public bool Thursday { get; set; }
+        public bool Friday { get; set; }
+        public bool Saturday { get; set; }
+        public Nullable<int> LastComposer1 { get; set; }
+        public Nullable<int> LastComposer2 { get; set; }
+        public Nullable<int> LastComposer3 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Kompositors> Kompositors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OriginalText> OriginalText { get; set; }
+        public virtual ICollection<Composer> Composer { get; set; }
+        public virtual Teacher Teacher { get; set; }
     }
 }

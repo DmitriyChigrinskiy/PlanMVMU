@@ -12,41 +12,41 @@ namespace PlanMVMU
     /// <summary>
     /// Логика взаимодействия для AddDelStudents.xaml
     /// </summary>
-    public partial class StudAndKompos
+    public partial class StudentAndСomposer
     {
-        public StudAndKompos(string DayWeek ,int IDStud, string NameStud, int CourseStud, string KomposStud, string Kategory)
+        public StudentAndСomposer(string DayWeek ,int IDStudent, string NameStudent, int CourseStudent, string ComposerStudent, string Category)
         {
             this.DayWeek = DayWeek;
-            this.IDStud = IDStud;
-            this.NameStud = NameStud;
-            this.CourseStud = CourseStud;
-            this.KomposStud = KomposStud;
-            this.Kategory = Kategory;
+            this.IDStudent = IDStudent;
+            this.NameStudent = NameStudent;
+            this.CourseStudent = CourseStudent;
+            this.ComposerStudent = ComposerStudent;
+            this.Category = Category;
         }
         public string DayWeek { get; set; }
-        public int IDStud { get; set; }
-        public string NameStud { get; set; }
-        public int CourseStud { get; set; }
-        public string KomposStud { get; set; }
-        public string Kategory { get; set; }
+        public int IDStudent { get; set; }
+        public string NameStudent { get; set; }
+        public int CourseStudent { get; set; }
+        public string ComposerStudent { get; set; }
+        public string Category { get; set; }
     } //DataGrid List
 
     public partial class AddDelStudents : Window
     {
-        Prepodavateli SelectedPrepod = new Prepodavateli();
-        PlanEntities Entities = new PlanEntities();
-        List<StudAndKompos> result = new List<StudAndKompos>(6);
-        Students SelectedStud;
-        List<Kompositors> ListKompositorsSelStud = new List<Kompositors>(4);
-        Kompositors SelectedKompositor;
-        Kategorii SelectedKategory;
-        private bool EditKategory = false;
+        Teacher SelectedTeacher = new Teacher();
+        Entities Entities = new Entities();
+        List<StudentAndСomposer> result = new List<StudentAndСomposer>();
+        Student SelectedStudent;
+        List<Composer> ListKompositorsSelStud = new List<Composer>(4);
+        Composer SelectedComposer;
+        Category SelectedCategory;
+        private bool EditCategory = false;
 
-        public AddDelStudents(Prepodavateli Prepodavatel)
+        public AddDelStudents(Teacher _teacher)
         {
             InitializeComponent();
-            SelectedPrepod = Prepodavatel;
-            CBKategory.ItemsSource = Entities.Kategorii.ToList();
+            SelectedTeacher = _teacher;
+            CBKategory.ItemsSource = Entities.Category.ToList();
             UpdateDG();
         }
 
@@ -103,26 +103,26 @@ namespace PlanMVMU
         private void UpdateDG()
         {
             result.Clear();
-            PlanEntities Entities = new PlanEntities();
-            foreach (var item in Entities.Students.Where(t => t.id_Prepod == SelectedPrepod.ID_Prepodavatel))
+            Entities Entities = new Entities();
+            foreach (var item in Entities.Student.Where(t => t.id_Teacher == SelectedTeacher.ID_Teacher))
             {
-                List<Kompositors> kompos = Entities.Kompositors.Where(t => t.id_Student == item.ID_Student).ToList();
-                string _kompos = "";
-                string _kategory = "";
-                if (kompos.Count != 0)
+                List<Composer> Composer = Entities.Composer.Where(t => t.id_Student == item.ID_Student).ToList();
+                string _compose = "";
+                string _category = "";
+                if (Composer.Count != 0)
                 {
-                    for (int i = 0; i < kompos.Count; i++)
+                    for (int i = 0; i < Composer.Count; i++)
                     {
-                        _kompos += kompos[i].KomposAndName + "\n";
-                        _kategory += kompos[i].Kategorii.NameKategory + "\n";
+                        _compose += Composer[i].ComposerAndComposition + "\n";
+                        _category += Composer[i].Category.NameCategory + "\n";
                     }
-                    _kompos = _kompos.Remove(_kompos.Length - 1);
-                    _kategory = _kategory.Remove(_kategory.Length - 1);
-                    result.Add(new StudAndKompos(GetMonthName.GetNameDays(Entities.Students.Where(t => t.ID_Student == item.ID_Student).FirstOrDefault()), item.ID_Student, item.NameFile, item.StudCourse, _kompos, _kategory));
+                    _compose = _compose.Remove(_compose.Length - 1);
+                    _category = _category.Remove(_category.Length - 1);
+                    result.Add(new StudentAndСomposer(GetMonthName.GetNameDays(Entities.Student.Where(t => t.ID_Student == item.ID_Student).FirstOrDefault()), item.ID_Student, item.NameFile, item.StudentCourse, _compose, _category));
                 }
                 else
                 {
-                    result.Add(new StudAndKompos(GetMonthName.GetNameDays(Entities.Students.Where(t => t.ID_Student == item.ID_Student).FirstOrDefault()), item.ID_Student, item.NameFile, item.StudCourse, "-", "-"));
+                    result.Add(new StudentAndСomposer(GetMonthName.GetNameDays(Entities.Student.Where(t => t.ID_Student == item.ID_Student).FirstOrDefault()), item.ID_Student, item.NameFile, item.StudentCourse, "-", "-"));
                 }
             }
             result.Sort((x, y) => String.Compare(x.DayWeek, y.DayWeek));
@@ -137,35 +137,35 @@ namespace PlanMVMU
         {
             if (DGStudents.SelectedItem != null)
             {
-                StudAndKompos SelectedRow = (StudAndKompos)DGStudents.SelectedItem;
-                SelectedStud = Entities.Students.Where(t => t.ID_Student == SelectedRow.IDStud).FirstOrDefault();
+                StudentAndСomposer SelectedRow = (StudentAndСomposer)DGStudents.SelectedItem;
+                SelectedStudent = Entities.Student.Where(t => t.ID_Student == SelectedRow.IDStudent).FirstOrDefault();
                 TBKompos.Text = "";
                 CBKategory.Text = "";
-                if (SelectedRow.KomposStud != "-")
+                if (SelectedRow.ComposerStudent != "-")
                 {
-                    Kompositors SelectedKompos = Entities.Kompositors.Where(t => t.id_Student == SelectedRow.IDStud).FirstOrDefault();
-                    TBKompos.Text = SelectedKompos.KomposAndName;
-                    CBKategory.Text = SelectedKompos.Kategorii.NameKategory;
-                    SelectedKategory = SelectedKompos.Kategorii;
+                    Composer SelectedKompos = Entities.Composer.Where(t => t.id_Student == SelectedRow.IDStudent).FirstOrDefault();
+                    TBKompos.Text = SelectedKompos.ComposerAndComposition;
+                    CBKategory.Text = SelectedKompos.Category.NameCategory;
+                    SelectedCategory = SelectedKompos.Category;
                     BtnEditKategory.Visibility = Visibility.Visible;
-                    if (Entities.Kompositors.Where(t => t.id_Student == SelectedStud.ID_Student).Count() > 1)
+                    if (Entities.Composer.Where(t => t.id_Student == SelectedStudent.ID_Student).Count() > 1)
                     {
                         BtnKomposBack.Visibility = Visibility.Visible;
                         BtnKomposNext.Visibility = Visibility.Visible;
                     }
-                    else if (Entities.Kompositors.Where(t => t.id_Student == SelectedStud.ID_Student).Count() == 1)
+                    else if (Entities.Composer.Where(t => t.id_Student == SelectedStudent.ID_Student).Count() == 1)
                     {
                         BtnKomposBack.Visibility = Visibility.Hidden;
                         BtnKomposNext.Visibility = Visibility.Hidden;
                     }
                     BtnNewKompos.Visibility = Visibility.Visible;
                     BtnDelKompos.Visibility = Visibility.Visible;
-                    SelectedKompositor = SelectedKompos;
+                    SelectedComposer = SelectedKompos;
                     if (ListKompositorsSelStud != null)
                     {
                         ListKompositorsSelStud.Clear();
                     }
-                    foreach (var item in Entities.Kompositors.Where(t => t.id_Student == SelectedStud.ID_Student))
+                    foreach (var item in Entities.Composer.Where(t => t.id_Student == SelectedStudent.ID_Student))
                     {
                         ListKompositorsSelStud.Add(item);
                     }
@@ -178,16 +178,16 @@ namespace PlanMVMU
                     BtnDelKompos.Visibility = Visibility.Hidden;
                 }
 
-                TBFIOFile.Text = SelectedStud.NameFile;
-                TBFIOText.Text = SelectedStud.NameText;
-                TBCourse.Text = Convert.ToString(SelectedStud.StudCourse);
-                TBGroup.Text = SelectedStud.StudGroup;
-                ChkBxMon.IsChecked = SelectedStud.Monday;
-                ChkBxTue.IsChecked = SelectedStud.Tuesday;
-                ChkBxWed.IsChecked = SelectedStud.Wednesday;
-                ChkBxThu.IsChecked = SelectedStud.Thursday;
-                ChkBxFri.IsChecked = SelectedStud.Friday;
-                ChkBxSat.IsChecked = SelectedStud.Saturday;
+                TBFIOFile.Text = SelectedStudent.NameFile;
+                TBFIOText.Text = SelectedStudent.NameText;
+                TBCourse.Text = Convert.ToString(SelectedStudent.StudentCourse);
+                TBGroup.Text = SelectedStudent.StudentGroup;
+                ChkBxMon.IsChecked = SelectedStudent.Monday;
+                ChkBxTue.IsChecked = SelectedStudent.Tuesday;
+                ChkBxWed.IsChecked = SelectedStudent.Wednesday;
+                ChkBxThu.IsChecked = SelectedStudent.Thursday;
+                ChkBxFri.IsChecked = SelectedStudent.Friday;
+                ChkBxSat.IsChecked = SelectedStudent.Saturday;
                 TBKompos.Visibility = Visibility.Visible;
                 CBKategory.Visibility = Visibility.Visible;
                 BtnClearBoxes.Visibility = Visibility.Visible;
@@ -200,13 +200,13 @@ namespace PlanMVMU
         {
             if (Check())
             {
-                Students student = new Students()
+                Student student = new Student()
                 {
                     NameFile = TBFIOFile.Text,
                     NameText = TBFIOText.Text,
-                    StudGroup = TBGroup.Text,
-                    StudCourse = Convert.ToInt32(TBCourse.Text),
-                    id_Prepod = SelectedPrepod.ID_Prepodavatel,
+                    StudentGroup = TBGroup.Text,
+                    StudentCourse = Convert.ToInt32(TBCourse.Text),
+                    id_Teacher = SelectedTeacher.ID_Teacher,
                     Monday = (bool)ChkBxMon.IsChecked,
                     Tuesday = (bool)ChkBxTue.IsChecked,
                     Wednesday = (bool)ChkBxWed.IsChecked,
@@ -214,9 +214,9 @@ namespace PlanMVMU
                     Friday = (bool)ChkBxFri.IsChecked,
                     Saturday = (bool)ChkBxSat.IsChecked
                 };
-                Entities.Students.Add(student);
+                Entities.Student.Add(student);
                 Entities.SaveChanges();
-                SelectedStud = student;
+                SelectedStudent = student;
                 CBKategory.Text = "Произведение";
                 TBKompos.Visibility = Visibility.Visible;
                 CBKategory.Visibility = Visibility.Visible;
@@ -231,71 +231,71 @@ namespace PlanMVMU
         {
             if (Check())
             {
-                if (TBFIOFile.Text != SelectedStud.NameFile || TBFIOText.Text != SelectedStud.NameText || Convert.ToInt32(TBCourse.Text) != SelectedStud.StudCourse ||
-                    TBGroup.Text != SelectedStud.StudGroup || (bool)ChkBxFri.IsChecked != SelectedStud.Friday || (bool)ChkBxMon.IsChecked != SelectedStud.Monday ||
-                    (bool)ChkBxSat.IsChecked != SelectedStud.Saturday || (bool)ChkBxThu.IsChecked != SelectedStud.Thursday ||
-                    (bool)ChkBxTue.IsChecked != SelectedStud.Tuesday || (bool)ChkBxWed.IsChecked != SelectedStud.Wednesday)
+                if (TBFIOFile.Text != SelectedStudent.NameFile || TBFIOText.Text != SelectedStudent.NameText || Convert.ToInt32(TBCourse.Text) != SelectedStudent.StudentCourse ||
+                    TBGroup.Text != SelectedStudent.StudentGroup || (bool)ChkBxFri.IsChecked != SelectedStudent.Friday || (bool)ChkBxMon.IsChecked != SelectedStudent.Monday ||
+                    (bool)ChkBxSat.IsChecked != SelectedStudent.Saturday || (bool)ChkBxThu.IsChecked != SelectedStudent.Thursday ||
+                    (bool)ChkBxTue.IsChecked != SelectedStudent.Tuesday || (bool)ChkBxWed.IsChecked != SelectedStudent.Wednesday)
                 {
-                    SelectedStud.NameFile = TBFIOFile.Text;
-                    SelectedStud.NameText = TBFIOText.Text;
-                    SelectedStud.StudCourse = Convert.ToInt32(TBCourse.Text);
-                    SelectedStud.StudGroup = TBGroup.Text;
-                    SelectedStud.Monday = (bool)ChkBxMon.IsChecked;
-                    SelectedStud.Tuesday = (bool)ChkBxTue.IsChecked;
-                    SelectedStud.Wednesday = (bool)ChkBxWed.IsChecked;
-                    SelectedStud.Thursday = (bool)ChkBxThu.IsChecked;
-                    SelectedStud.Friday = (bool)ChkBxFri.IsChecked;
-                    SelectedStud.Saturday = (bool)ChkBxSat.IsChecked;
+                    SelectedStudent.NameFile = TBFIOFile.Text;
+                    SelectedStudent.NameText = TBFIOText.Text;
+                    SelectedStudent.StudentCourse = Convert.ToInt32(TBCourse.Text);
+                    SelectedStudent.StudentGroup = TBGroup.Text;
+                    SelectedStudent.Monday = (bool)ChkBxMon.IsChecked;
+                    SelectedStudent.Tuesday = (bool)ChkBxTue.IsChecked;
+                    SelectedStudent.Wednesday = (bool)ChkBxWed.IsChecked;
+                    SelectedStudent.Thursday = (bool)ChkBxThu.IsChecked;
+                    SelectedStudent.Friday = (bool)ChkBxFri.IsChecked;
+                    SelectedStudent.Saturday = (bool)ChkBxSat.IsChecked;
                     Entities.SaveChanges();
                 }
                 if (TBKompos.Text != "" && CBKategory.Text != "")
                 {
                     if (CBKategory.SelectedItem == null && CBKategory.Text != "")
                     {
-                        Kategorii kategorii = new Kategorii
+                        Category category = new Category
                         {
-                            NameKategory = CBKategory.Text
+                            NameCategory = CBKategory.Text
                         };
-                        Entities.Kategorii.Add(kategorii);
+                        Entities.Category.Add(category);
                         Entities.SaveChanges();
-                        SelectedKategory = kategorii;
-                        CBKategory.ItemsSource = Entities.Kategorii.ToList();
+                        SelectedCategory = category;
+                        CBKategory.ItemsSource = Entities.Category.ToList();
                         CBKategory.Items.Refresh();
-                        CBKategory.Text = kategorii.NameKategory;
+                        CBKategory.Text = category.NameCategory;
                     }
                     else if (CBKategory.SelectedItem != null)
                     {
-                        SelectedKategory = (Kategorii)CBKategory.SelectedItem;
+                        SelectedCategory = (Category)CBKategory.SelectedItem;
                     }
-                    if (Entities.Kompositors.Where(t=>t.id_Student == SelectedStud.ID_Student && t.KomposAndName == TBKompos.Text).FirstOrDefault() == default && CBKategory.Text != "")
+                    if (Entities.Composer.Where(t=>t.id_Student == SelectedStudent.ID_Student && t.ComposerAndComposition == TBKompos.Text).FirstOrDefault() == default && CBKategory.Text != "")
                     {
                         try
                         {
-                            Kompositors kompositors = new Kompositors()
+                            Composer kompositors = new Composer()
                             {
-                                id_Student = SelectedStud.ID_Student,
-                                KomposAndName = TBKompos.Text,
-                                id_Kat = SelectedKategory.ID_Kategoriya
+                                id_Student = SelectedStudent.ID_Student,
+                                ComposerAndComposition = TBKompos.Text,
+                                id_Category = SelectedCategory.ID_Category
                             };
-                            Entities.Kompositors.Add(kompositors);
+                            Entities.Composer.Add(kompositors);
                             Entities.SaveChanges();
-                            SelectedKompositor = kompositors;
+                            SelectedComposer = kompositors;
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
                         }
                     }
-                    else if (Entities.Kompositors.Where(t => t.id_Student == SelectedStud.ID_Student && t.KomposAndName == TBKompos.Text).FirstOrDefault() != default)
+                    else if (Entities.Composer.Where(t => t.id_Student == SelectedStudent.ID_Student && t.ComposerAndComposition == TBKompos.Text).FirstOrDefault() != default)
                     {
-                        SelectedKompositor.KomposAndName = TBKompos.Text;
-                        SelectedKompositor.id_Kat = SelectedKategory.ID_Kategoriya;
+                        SelectedComposer.ComposerAndComposition = TBKompos.Text;
+                        SelectedComposer.id_Category = SelectedCategory.ID_Category;
                         Entities.SaveChanges();
                     }
                 }
                 UpdateDG();
-                DGStudents.ScrollIntoView(DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())]);
-                DGStudents.SelectedItem = DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())];
+                DGStudents.ScrollIntoView(DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStudent == SelectedStudent.ID_Student).FirstOrDefault())]);
+                DGStudents.SelectedItem = DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStudent == SelectedStudent.ID_Student).FirstOrDefault())];
                 
             }
         }
@@ -367,16 +367,16 @@ namespace PlanMVMU
         {
             if (MessageBox.Show("Вы хотите удалить список всех композиторов с произведениями. Подтвердите действие.","Требуется подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                foreach (var item in Entities.Kompositors)
+                foreach (var item in Entities.Composer)
                 {
-                    Entities.Kompositors.Remove(item);
+                    Entities.Composer.Remove(item);
                     Entities.SaveChanges();
                 }
-                foreach(var item in Entities.Students)
+                foreach(var item in Entities.Student)
                 {
-                    item.LastKompos1 = null;
-                    item.LastKompos2 = null;
-                    item.LastKompos3 = null;
+                    item.LastComposer1 = null;
+                    item.LastComposer2 = null;
+                    item.LastComposer3 = null;
                     Entities.SaveChanges();
                 }
                 UpdateDG();
@@ -405,31 +405,31 @@ namespace PlanMVMU
             {
                 try
                 {
-                    if (SelectedStud.LastKompos1 == SelectedKompositor.ID_Kompos)
+                    if (SelectedStudent.LastComposer1 == SelectedComposer.ID_Composer)
                     {
-                        SelectedStud.LastKompos1 = null;
+                        SelectedStudent.LastComposer1 = null;
                         Entities.SaveChanges();
                     }
-                    if (SelectedStud.LastKompos2 == SelectedKompositor.ID_Kompos)
+                    if (SelectedStudent.LastComposer2 == SelectedComposer.ID_Composer)
                     {
-                        SelectedStud.LastKompos2 = null;
+                        SelectedStudent.LastComposer2 = null;
                         Entities.SaveChanges();
                     }
-                    if (SelectedStud.LastKompos3 == SelectedKompositor.ID_Kompos)
+                    if (SelectedStudent.LastComposer3 == SelectedComposer.ID_Composer)
                     {
-                        SelectedStud.LastKompos3 = null;
+                        SelectedStudent.LastComposer3 = null;
                         Entities.SaveChanges();
                     }
-                    if (SelectedStud.LastKompos1 == SelectedKompositor.ID_Kompos)
+                    if (SelectedStudent.LastComposer1 == SelectedComposer.ID_Composer)
                     {
-                        SelectedStud.LastKompos1 = null;
+                        SelectedStudent.LastComposer1 = null;
                         Entities.SaveChanges();
                     }
-                    Entities.Kompositors.Remove(SelectedKompositor);
+                    Entities.Composer.Remove(SelectedComposer);
                     Entities.SaveChanges();
                     UpdateDG();
-                    DGStudents.ScrollIntoView(DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())]);
-                    DGStudents.SelectedItem = DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStud == SelectedStud.ID_Student).FirstOrDefault())];
+                    DGStudents.ScrollIntoView(DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStudent == SelectedStudent.ID_Student).FirstOrDefault())]);
+                    DGStudents.SelectedItem = DGStudents.Items[DGStudents.Items.IndexOf(result.Where(t => t.IDStudent == SelectedStudent.ID_Student).FirstOrDefault())];
                     MessageBox.Show("Композитор и произведение удалёны.");
                 }
                 catch (Exception)
@@ -446,7 +446,7 @@ namespace PlanMVMU
             }
             else
             {
-                if (EditKategory == false)
+                if (EditCategory == false)
                 {
                     BtnEditKategory.Visibility = Visibility.Hidden;
                 }
@@ -457,20 +457,20 @@ namespace PlanMVMU
         {
             if (Convert.ToString(BtnEditKategory.Content) == "Изм.")
             {
-                SelectedKategory = (Kategorii)CBKategory.SelectedItem;
+                SelectedCategory = (Category)CBKategory.SelectedItem;
                 BtnEditKategory.Content = "Сохр.";
                 CBKategory.IsEditable = true;
-                EditKategory = true;
+                EditCategory = true;
             }
             else
             {
-                SelectedKategory.NameKategory = CBKategory.Text;
+                SelectedCategory.NameCategory = CBKategory.Text;
                 Entities.SaveChanges();
                 CBKategory.Items.Refresh();
-                CBKategory.Text = SelectedKategory.NameKategory;
+                CBKategory.Text = SelectedCategory.NameCategory;
                 BtnEditKategory.Content = "Изм.";
                 CBKategory.IsEditable = false;
-                EditKategory = false;
+                EditCategory = false;
                 UpdateDG();
             }
         }
@@ -479,24 +479,24 @@ namespace PlanMVMU
         {
             if (listing == -1)
             {
-                int lst = ListKompositorsSelStud.FindIndex(t => t.ID_Kompos == SelectedKompositor.ID_Kompos);
+                int lst = ListKompositorsSelStud.FindIndex(t => t.ID_Composer == SelectedComposer.ID_Composer);
                 if (lst != 0)
                 {
-                    TBKompos.Text = ListKompositorsSelStud[lst - 1].KomposAndName;
-                    CBKategory.Text = ListKompositorsSelStud[lst - 1].Kategorii.NameKategory;
-                    SelectedKategory = ListKompositorsSelStud[lst - 1].Kategorii;
-                    SelectedKompositor = ListKompositorsSelStud[lst - 1];
+                    TBKompos.Text = ListKompositorsSelStud[lst - 1].ComposerAndComposition;
+                    CBKategory.Text = ListKompositorsSelStud[lst - 1].Category.NameCategory;
+                    SelectedCategory = ListKompositorsSelStud[lst - 1].Category;
+                    SelectedComposer = ListKompositorsSelStud[lst - 1];
                 }
             }
             else
             {
-                int lst = ListKompositorsSelStud.FindIndex(t => t.ID_Kompos == SelectedKompositor.ID_Kompos);
+                int lst = ListKompositorsSelStud.FindIndex(t => t.ID_Composer == SelectedComposer.ID_Composer);
                 if (lst < ListKompositorsSelStud.Count - 1)
                 {
-                    TBKompos.Text = ListKompositorsSelStud[lst + 1].KomposAndName;
-                    CBKategory.Text = ListKompositorsSelStud[lst + 1].Kategorii.NameKategory;
-                    SelectedKategory = ListKompositorsSelStud[lst + 1].Kategorii;
-                    SelectedKompositor = ListKompositorsSelStud[lst + 1];
+                    TBKompos.Text = ListKompositorsSelStud[lst + 1].ComposerAndComposition;
+                    CBKategory.Text = ListKompositorsSelStud[lst + 1].Category.NameCategory;
+                    SelectedCategory = ListKompositorsSelStud[lst + 1].Category;
+                    SelectedComposer = ListKompositorsSelStud[lst + 1];
                 }
             }
         }
@@ -515,16 +515,16 @@ namespace PlanMVMU
         {
             if (MessageBox.Show("Действительно удалить данного студента? Требуется подтверждение.","Подтвердите действие", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                List<Kompositors> kompositors = Entities.Kompositors.Where(t => t.id_Student == SelectedStud.ID_Student).ToList();
+                List<Composer> kompositors = Entities.Composer.Where(t => t.id_Student == SelectedStudent.ID_Student).ToList();
                 if (kompositors != null)
                 {
                     foreach (var item in kompositors)
                     {
-                        Entities.Kompositors.Remove(item);
+                        Entities.Composer.Remove(item);
                         Entities.SaveChanges();
                     }
                 }
-                Entities.Students.Remove(SelectedStud);
+                Entities.Student.Remove(SelectedStudent);
                 Entities.SaveChanges();
                 ClearAllBoxes();
                 UpdateDG();

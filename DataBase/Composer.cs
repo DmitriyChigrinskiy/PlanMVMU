@@ -12,15 +12,15 @@ namespace PlanMVMU.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Kompositors
+    public partial class Composer
     {
-        public int ID_Kompos { get; set; }
-        public string KomposAndName { get; set; }
+        public int ID_Composer { get; set; }
+        public string ComposerAndComposition { get; set; }
         public int id_Student { get; set; }
-        public int id_Kat { get; set; }
+        public int id_Category { get; set; }
         public Nullable<int> LastStage { get; set; }
     
-        public virtual Kategorii Kategorii { get; set; }
-        public virtual Students Students { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

@@ -5,131 +5,131 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Kategorii">
+        <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="ID_Kategoriya" />
+            <PropertyRef Name="ID_Category" />
           </Key>
-          <Property Name="ID_Kategoriya" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NameKategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_Category" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameCategory" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Kompositors">
+        <EntityType Name="Composer">
           <Key>
-            <PropertyRef Name="ID_Kompos" />
+            <PropertyRef Name="ID_Composer" />
           </Key>
-          <Property Name="ID_Kompos" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="KomposAndName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="ID_Composer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComposerAndComposition" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="id_Student" Type="int" Nullable="false" />
-          <Property Name="id_Kat" Type="int" Nullable="false" />
+          <Property Name="id_Category" Type="int" Nullable="false" />
           <Property Name="LastStage" Type="int" />
         </EntityType>
         <EntityType Name="OriginalText">
           <Key>
-            <PropertyRef Name="ID_OriginalTextCompose" />
+            <PropertyRef Name="ID_OriginalText" />
           </Key>
-          <Property Name="ID_OriginalTextCompose" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_OriginalText" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Stage" Type="int" Nullable="false" />
-          <Property Name="TextCompose" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="id_Kategory" Type="int" Nullable="false" />
-          <Property Name="id_Prepodavatel" Type="int" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="id_Category" Type="int" Nullable="false" />
+          <Property Name="id_Teacher" Type="int" />
         </EntityType>
-        <EntityType Name="Prepodavateli">
-          <Key>
-            <PropertyRef Name="ID_Prepodavatel" />
-          </Key>
-          <Property Name="ID_Prepodavatel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DateStop" Type="date" />
-          <Property Name="idLastStudentPlan" Type="int" />
-        </EntityType>
-        <EntityType Name="Students">
+        <EntityType Name="Student">
           <Key>
             <PropertyRef Name="ID_Student" />
           </Key>
           <Property Name="ID_Student" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NameFile" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="NameText" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="StudGroup" Type="nvarchar" MaxLength="7" Nullable="false" />
-          <Property Name="StudCourse" Type="int" Nullable="false" />
-          <Property Name="id_Prepod" Type="int" Nullable="false" />
+          <Property Name="StudentGroup" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="StudentCourse" Type="int" Nullable="false" />
+          <Property Name="id_Teacher" Type="int" Nullable="false" />
           <Property Name="Monday" Type="bit" Nullable="false" />
           <Property Name="Tuesday" Type="bit" Nullable="false" />
           <Property Name="Wednesday" Type="bit" Nullable="false" />
           <Property Name="Thursday" Type="bit" Nullable="false" />
           <Property Name="Friday" Type="bit" Nullable="false" />
           <Property Name="Saturday" Type="bit" Nullable="false" />
-          <Property Name="LastKompos1" Type="int" />
-          <Property Name="LastKompos2" Type="int" />
-          <Property Name="LastKompos3" Type="int" />
+          <Property Name="LastComposer1" Type="int" />
+          <Property Name="LastComposer2" Type="int" />
+          <Property Name="LastComposer3" Type="int" />
         </EntityType>
-        <Association Name="FK_Kompositors_Kategorii">
-          <End Role="Kategorii" Type="Self.Kategorii" Multiplicity="1" />
-          <End Role="Kompositors" Type="Self.Kompositors" Multiplicity="*" />
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="ID_Teacher" />
+          </Key>
+          <Property Name="ID_Teacher" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateStopCreatePlan" Type="date" />
+          <Property Name="idLastStudentPlan" Type="int" />
+        </EntityType>
+        <Association Name="FK_Composer_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Kategorii">
-              <PropertyRef Name="ID_Kategoriya" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID_Category" />
             </Principal>
-            <Dependent Role="Kompositors">
-              <PropertyRef Name="id_Kat" />
+            <Dependent Role="Composer">
+              <PropertyRef Name="id_Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Kompositors_Students">
-          <End Role="Students" Type="Self.Students" Multiplicity="1" />
-          <End Role="Kompositors" Type="Self.Kompositors" Multiplicity="*" />
+        <Association Name="FK_Composer_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Students">
+            <Principal Role="Student">
               <PropertyRef Name="ID_Student" />
             </Principal>
-            <Dependent Role="Kompositors">
+            <Dependent Role="Composer">
               <PropertyRef Name="id_Student" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OriginalText_Kategorii">
-          <End Role="Kategorii" Type="Self.Kategorii" Multiplicity="1" />
+        <Association Name="FK_OriginalText_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="OriginalText" Type="Self.OriginalText" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Kategorii">
-              <PropertyRef Name="ID_Kategoriya" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID_Category" />
             </Principal>
             <Dependent Role="OriginalText">
-              <PropertyRef Name="id_Kategory" />
+              <PropertyRef Name="id_Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Students_Prepodavateli">
-          <End Role="Prepodavateli" Type="Self.Prepodavateli" Multiplicity="1" />
-          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+        <Association Name="FK_Student_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Prepodavateli">
-              <PropertyRef Name="ID_Prepodavatel" />
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID_Teacher" />
             </Principal>
-            <Dependent Role="Students">
-              <PropertyRef Name="id_Prepod" />
+            <Dependent Role="Student">
+              <PropertyRef Name="id_Teacher" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Хранилище ModelContainer">
-          <EntitySet Name="Kategorii" EntityType="Self.Kategorii" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Kompositors" EntityType="Self.Kompositors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Composer" EntityType="Self.Composer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OriginalText" EntityType="Self.OriginalText" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Prepodavateli" EntityType="Self.Prepodavateli" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Kompositors_Kategorii" Association="Self.FK_Kompositors_Kategorii">
-            <End Role="Kategorii" EntitySet="Kategorii" />
-            <End Role="Kompositors" EntitySet="Kompositors" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Composer_Category" Association="Self.FK_Composer_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Composer" EntitySet="Composer" />
           </AssociationSet>
-          <AssociationSet Name="FK_Kompositors_Students" Association="Self.FK_Kompositors_Students">
-            <End Role="Students" EntitySet="Students" />
-            <End Role="Kompositors" EntitySet="Kompositors" />
+          <AssociationSet Name="FK_Composer_Student" Association="Self.FK_Composer_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Composer" EntitySet="Composer" />
           </AssociationSet>
-          <AssociationSet Name="FK_OriginalText_Kategorii" Association="Self.FK_OriginalText_Kategorii">
-            <End Role="Kategorii" EntitySet="Kategorii" />
+          <AssociationSet Name="FK_OriginalText_Category" Association="Self.FK_OriginalText_Category">
+            <End Role="Category" EntitySet="Category" />
             <End Role="OriginalText" EntitySet="OriginalText" />
           </AssociationSet>
-          <AssociationSet Name="FK_Students_Prepodavateli" Association="Self.FK_Students_Prepodavateli">
-            <End Role="Prepodavateli" EntitySet="Prepodavateli" />
-            <End Role="Students" EntitySet="Students" />
+          <AssociationSet Name="FK_Student_Teacher" Association="Self.FK_Student_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Student" EntitySet="Student" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -137,139 +137,139 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Kategorii">
+        <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="ID_Kategoriya" />
+            <PropertyRef Name="ID_Category" />
           </Key>
-          <Property Name="ID_Kategoriya" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameKategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Kompositors" Relationship="Self.FK_Kompositors_Kategorii" FromRole="Kategorii" ToRole="Kompositors" />
-          <NavigationProperty Name="OriginalText" Relationship="Self.FK_OriginalText_Kategorii" FromRole="Kategorii" ToRole="OriginalText" />
+          <Property Name="ID_Category" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_Composer_Category" FromRole="Category" ToRole="Composer" />
+          <NavigationProperty Name="OriginalText" Relationship="Self.FK_OriginalText_Category" FromRole="Category" ToRole="OriginalText" />
         </EntityType>
-        <EntityType Name="Kompositors">
+        <EntityType Name="Composer">
           <Key>
-            <PropertyRef Name="ID_Kompos" />
+            <PropertyRef Name="ID_Composer" />
           </Key>
-          <Property Name="ID_Kompos" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KomposAndName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_Composer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComposerAndComposition" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="id_Student" Type="Int32" Nullable="false" />
-          <Property Name="id_Kat" Type="Int32" Nullable="false" />
+          <Property Name="id_Category" Type="Int32" Nullable="false" />
           <Property Name="LastStage" Type="Int32" />
-          <NavigationProperty Name="Kategorii" Relationship="Self.FK_Kompositors_Kategorii" FromRole="Kompositors" ToRole="Kategorii" />
-          <NavigationProperty Name="Students" Relationship="Self.FK_Kompositors_Students" FromRole="Kompositors" ToRole="Students" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Composer_Category" FromRole="Composer" ToRole="Category" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Composer_Student" FromRole="Composer" ToRole="Student" />
         </EntityType>
         <EntityType Name="OriginalText">
           <Key>
-            <PropertyRef Name="ID_OriginalTextCompose" />
+            <PropertyRef Name="ID_OriginalText" />
           </Key>
-          <Property Name="ID_OriginalTextCompose" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_OriginalText" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Stage" Type="Int32" Nullable="false" />
-          <Property Name="TextCompose" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="id_Kategory" Type="Int32" Nullable="false" />
-          <Property Name="id_Prepodavatel" Type="Int32" />
-          <NavigationProperty Name="Kategorii" Relationship="Self.FK_OriginalText_Kategorii" FromRole="OriginalText" ToRole="Kategorii" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_Category" Type="Int32" Nullable="false" />
+          <Property Name="id_Teacher" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_OriginalText_Category" FromRole="OriginalText" ToRole="Category" />
         </EntityType>
-        <EntityType Name="Prepodavateli">
-          <Key>
-            <PropertyRef Name="ID_Prepodavatel" />
-          </Key>
-          <Property Name="ID_Prepodavatel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateStop" Type="DateTime" Precision="0" />
-          <Property Name="idLastStudentPlan" Type="Int32" />
-          <NavigationProperty Name="Students" Relationship="Self.FK_Students_Prepodavateli" FromRole="Prepodavateli" ToRole="Students" />
-        </EntityType>
-        <EntityType Name="Students">
+        <EntityType Name="Student">
           <Key>
             <PropertyRef Name="ID_Student" />
           </Key>
           <Property Name="ID_Student" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameFile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NameText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StudGroup" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StudCourse" Type="Int32" Nullable="false" />
-          <Property Name="id_Prepod" Type="Int32" Nullable="false" />
+          <Property Name="StudentGroup" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentCourse" Type="Int32" Nullable="false" />
+          <Property Name="id_Teacher" Type="Int32" Nullable="false" />
           <Property Name="Monday" Type="Boolean" Nullable="false" />
           <Property Name="Tuesday" Type="Boolean" Nullable="false" />
           <Property Name="Wednesday" Type="Boolean" Nullable="false" />
           <Property Name="Thursday" Type="Boolean" Nullable="false" />
           <Property Name="Friday" Type="Boolean" Nullable="false" />
           <Property Name="Saturday" Type="Boolean" Nullable="false" />
-          <Property Name="LastKompos1" Type="Int32" />
-          <Property Name="LastKompos2" Type="Int32" />
-          <Property Name="LastKompos3" Type="Int32" />
-          <NavigationProperty Name="Kompositors" Relationship="Self.FK_Kompositors_Students" FromRole="Students" ToRole="Kompositors" />
-          <NavigationProperty Name="Prepodavateli" Relationship="Self.FK_Students_Prepodavateli" FromRole="Students" ToRole="Prepodavateli" />
+          <Property Name="LastComposer1" Type="Int32" />
+          <Property Name="LastComposer2" Type="Int32" />
+          <Property Name="LastComposer3" Type="Int32" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_Composer_Student" FromRole="Student" ToRole="Composer" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Student_Teacher" FromRole="Student" ToRole="Teacher" />
         </EntityType>
-        <Association Name="FK_Kompositors_Kategorii">
-          <End Role="Kategorii" Type="Self.Kategorii" Multiplicity="1" />
-          <End Role="Kompositors" Type="Self.Kompositors" Multiplicity="*" />
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="ID_Teacher" />
+          </Key>
+          <Property Name="ID_Teacher" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateStopCreatePlan" Type="DateTime" Precision="0" />
+          <Property Name="idLastStudentPlan" Type="Int32" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Student_Teacher" FromRole="Teacher" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Composer_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Kategorii">
-              <PropertyRef Name="ID_Kategoriya" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID_Category" />
             </Principal>
-            <Dependent Role="Kompositors">
-              <PropertyRef Name="id_Kat" />
+            <Dependent Role="Composer">
+              <PropertyRef Name="id_Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OriginalText_Kategorii">
-          <End Role="Kategorii" Type="Self.Kategorii" Multiplicity="1" />
+        <Association Name="FK_OriginalText_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="OriginalText" Type="Self.OriginalText" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Kategorii">
-              <PropertyRef Name="ID_Kategoriya" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID_Category" />
             </Principal>
             <Dependent Role="OriginalText">
-              <PropertyRef Name="id_Kategory" />
+              <PropertyRef Name="id_Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Kompositors_Students">
-          <End Role="Students" Type="Self.Students" Multiplicity="1" />
-          <End Role="Kompositors" Type="Self.Kompositors" Multiplicity="*" />
+        <Association Name="FK_Composer_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Students">
+            <Principal Role="Student">
               <PropertyRef Name="ID_Student" />
             </Principal>
-            <Dependent Role="Kompositors">
+            <Dependent Role="Composer">
               <PropertyRef Name="id_Student" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Students_Prepodavateli">
-          <End Role="Prepodavateli" Type="Self.Prepodavateli" Multiplicity="1" />
-          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+        <Association Name="FK_Student_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Prepodavateli">
-              <PropertyRef Name="ID_Prepodavatel" />
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID_Teacher" />
             </Principal>
-            <Dependent Role="Students">
-              <PropertyRef Name="id_Prepod" />
+            <Dependent Role="Student">
+              <PropertyRef Name="id_Teacher" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PlanEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Kategorii" EntityType="Self.Kategorii" />
-          <EntitySet Name="Kompositors" EntityType="Self.Kompositors" />
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Composer" EntityType="Self.Composer" />
           <EntitySet Name="OriginalText" EntityType="Self.OriginalText" />
-          <EntitySet Name="Prepodavateli" EntityType="Self.Prepodavateli" />
-          <EntitySet Name="Students" EntityType="Self.Students" />
-          <AssociationSet Name="FK_Kompositors_Kategorii" Association="Self.FK_Kompositors_Kategorii">
-            <End Role="Kategorii" EntitySet="Kategorii" />
-            <End Role="Kompositors" EntitySet="Kompositors" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+          <AssociationSet Name="FK_Composer_Category" Association="Self.FK_Composer_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Composer" EntitySet="Composer" />
           </AssociationSet>
-          <AssociationSet Name="FK_OriginalText_Kategorii" Association="Self.FK_OriginalText_Kategorii">
-            <End Role="Kategorii" EntitySet="Kategorii" />
+          <AssociationSet Name="FK_OriginalText_Category" Association="Self.FK_OriginalText_Category">
+            <End Role="Category" EntitySet="Category" />
             <End Role="OriginalText" EntitySet="OriginalText" />
           </AssociationSet>
-          <AssociationSet Name="FK_Kompositors_Students" Association="Self.FK_Kompositors_Students">
-            <End Role="Students" EntitySet="Students" />
-            <End Role="Kompositors" EntitySet="Kompositors" />
+          <AssociationSet Name="FK_Composer_Student" Association="Self.FK_Composer_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Composer" EntitySet="Composer" />
           </AssociationSet>
-          <AssociationSet Name="FK_Students_Prepodavateli" Association="Self.FK_Students_Prepodavateli">
-            <End Role="Prepodavateli" EntitySet="Prepodavateli" />
-            <End Role="Students" EntitySet="Students" />
+          <AssociationSet Name="FK_Student_Teacher" Association="Self.FK_Student_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Student" EntitySet="Student" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -277,22 +277,22 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="PlanEntities">
-          <EntitySetMapping Name="Kategorii">
-            <EntityTypeMapping TypeName="Model.Kategorii">
-              <MappingFragment StoreEntitySet="Kategorii">
-                <ScalarProperty Name="ID_Kategoriya" ColumnName="ID_Kategoriya" />
-                <ScalarProperty Name="NameKategory" ColumnName="NameKategory" />
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="Model.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="ID_Category" ColumnName="ID_Category" />
+                <ScalarProperty Name="NameCategory" ColumnName="NameCategory" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Kompositors">
-            <EntityTypeMapping TypeName="Model.Kompositors">
-              <MappingFragment StoreEntitySet="Kompositors">
-                <ScalarProperty Name="ID_Kompos" ColumnName="ID_Kompos" />
-                <ScalarProperty Name="KomposAndName" ColumnName="KomposAndName" />
+          <EntitySetMapping Name="Composer">
+            <EntityTypeMapping TypeName="Model.Composer">
+              <MappingFragment StoreEntitySet="Composer">
+                <ScalarProperty Name="ID_Composer" ColumnName="ID_Composer" />
+                <ScalarProperty Name="ComposerAndComposition" ColumnName="ComposerAndComposition" />
                 <ScalarProperty Name="id_Student" ColumnName="id_Student" />
-                <ScalarProperty Name="id_Kat" ColumnName="id_Kat" />
+                <ScalarProperty Name="id_Category" ColumnName="id_Category" />
                 <ScalarProperty Name="LastStage" ColumnName="LastStage" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -300,42 +300,42 @@
           <EntitySetMapping Name="OriginalText">
             <EntityTypeMapping TypeName="Model.OriginalText">
               <MappingFragment StoreEntitySet="OriginalText">
-                <ScalarProperty Name="ID_OriginalTextCompose" ColumnName="ID_OriginalTextCompose" />
+                <ScalarProperty Name="ID_OriginalText" ColumnName="ID_OriginalText" />
                 <ScalarProperty Name="Stage" ColumnName="Stage" />
-                <ScalarProperty Name="TextCompose" ColumnName="TextCompose" />
-                <ScalarProperty Name="id_Kategory" ColumnName="id_Kategory" />
-                <ScalarProperty Name="id_Prepodavatel" ColumnName="id_Prepodavatel" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="id_Category" ColumnName="id_Category" />
+                <ScalarProperty Name="id_Teacher" ColumnName="id_Teacher" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Prepodavateli">
-            <EntityTypeMapping TypeName="Model.Prepodavateli">
-              <MappingFragment StoreEntitySet="Prepodavateli">
-                <ScalarProperty Name="ID_Prepodavatel" ColumnName="ID_Prepodavatel" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DateStop" ColumnName="DateStop" />
-                <ScalarProperty Name="idLastStudentPlan" ColumnName="idLastStudentPlan" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="Model.Students">
-              <MappingFragment StoreEntitySet="Students">
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="Model.Student">
+              <MappingFragment StoreEntitySet="Student">
                 <ScalarProperty Name="ID_Student" ColumnName="ID_Student" />
                 <ScalarProperty Name="NameFile" ColumnName="NameFile" />
                 <ScalarProperty Name="NameText" ColumnName="NameText" />
-                <ScalarProperty Name="StudGroup" ColumnName="StudGroup" />
-                <ScalarProperty Name="StudCourse" ColumnName="StudCourse" />
-                <ScalarProperty Name="id_Prepod" ColumnName="id_Prepod" />
+                <ScalarProperty Name="StudentGroup" ColumnName="StudentGroup" />
+                <ScalarProperty Name="StudentCourse" ColumnName="StudentCourse" />
+                <ScalarProperty Name="id_Teacher" ColumnName="id_Teacher" />
                 <ScalarProperty Name="Monday" ColumnName="Monday" />
                 <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
                 <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
                 <ScalarProperty Name="Thursday" ColumnName="Thursday" />
                 <ScalarProperty Name="Friday" ColumnName="Friday" />
                 <ScalarProperty Name="Saturday" ColumnName="Saturday" />
-                <ScalarProperty Name="LastKompos1" ColumnName="LastKompos1" />
-                <ScalarProperty Name="LastKompos2" ColumnName="LastKompos2" />
-                <ScalarProperty Name="LastKompos3" ColumnName="LastKompos3" />
+                <ScalarProperty Name="LastComposer1" ColumnName="LastComposer1" />
+                <ScalarProperty Name="LastComposer2" ColumnName="LastComposer2" />
+                <ScalarProperty Name="LastComposer3" ColumnName="LastComposer3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teacher">
+            <EntityTypeMapping TypeName="Model.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="ID_Teacher" ColumnName="ID_Teacher" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="DateStopCreatePlan" ColumnName="DateStopCreatePlan" />
+                <ScalarProperty Name="idLastStudentPlan" ColumnName="idLastStudentPlan" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

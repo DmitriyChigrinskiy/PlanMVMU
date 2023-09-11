@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanMVMU.DataBase.Operations
 {
-    class Operations
+    class CategoryOperations
     {
     }
 }

@@ -9,39 +9,38 @@ using PlanMVMU.DataBase;
 
 namespace PlanMVMU
 {
-    /// <summary>
-    /// Логика взаимодействия для CreateOptionalPlan.xaml
-    /// </summary>
     public partial class CreateOptionalPlan : Page
     {
-        PlanEntities Entities = new PlanEntities();
+        Entities Entities = new Entities();
 
         private FileInfo _fileInfo;
 
-        Prepodavateli _Prepod;
-        List<Students> _LstStud = new List<Students>();
-        List<Students> _LstStudMonday = new List<Students>();
-        List<Students> _LstStudTuesday = new List<Students>();
-        List<Students> _LstStudWednesday = new List<Students>();
-        List<Students> _LstStudThursday = new List<Students>();
-        List<Students> _LstStudFriday = new List<Students>();
-        List<Students> _LstStudSaturday = new List<Students>();
-        List<Students> _LstStudSunday = new List<Students>();
+        Teacher _teacher;
+        Student _student;
 
-        Students students;
-        List<int> Stages = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+        List<Student> _listStudents = new List<Student>();
+        List<Student> _listStudentsMonday = new List<Student>();
+        List<Student> _listStudentsTuesday = new List<Student>();
+        List<Student> _listStudentsWednesday = new List<Student>();
+        List<Student> _listStudentsThursday = new List<Student>();
+        List<Student> _listStudentsFriday = new List<Student>();
+        List<Student> _listStudentsSaturday = new List<Student>();
+        List<Student> _listStudentsSunday = new List<Student>();
 
-        Kompositors _kompos1;
-        Kompositors _kompos2;
-        Kompositors _kompos3;
 
-        Kategorii _kateg1;
-        Kategorii _kateg2;
-        Kategorii _kateg3;
+        List<int> Stages = new List<int>(30) { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 
-        int _stage1;
-        int _stage2;
-        int _stage3;
+        Composer _composer1;
+        Composer _composer2;
+        Composer _composer3;
+
+        Category _category1;
+        Category _category2;
+        Category _category3;
+
+        private int _stage1;
+        private int _stage2;
+        private int _stage3;
 
         List<string> Text1 = new List<string>(3);
         List<string> Text2 = new List<string>(3);
@@ -59,55 +58,54 @@ namespace PlanMVMU
         DateTime DateStop;
         
 
-        public CreateOptionalPlan(bool Edit, DateTime _DateStart, DateTime _DateStop, Prepodavateli prepodavatel, string path )
+        public CreateOptionalPlan(bool Edit, DateTime _DateStart, DateTime _DateStop, Teacher prepodavatel, string path )
         {
             InitializeComponent();
             DateSession = _DateStart;
             DateStop = _DateStop;
-            _Prepod = prepodavatel;
+            _teacher = prepodavatel;
             _Path= path;
             StudentsInDaysLists(prepodavatel);
             EnabledContent(Edit);
             //bool _check = false;
-            for (int i = 0; Properties.Settings.Default.Stop != true; i++)
+            for (int i = 0; Properties.Settings.Default.Stop == false; i++)
             {
                 if (_CheckDayofWeek(DateSession))
                 {
-                    LoadStud(students);
+                    LoadStud(_student);
                     //_check = true;
-
                 }
             }
         }
 
-        private void StudentsInDaysLists(Prepodavateli prepodavatel)
+        private void StudentsInDaysLists(Teacher prepodavatel)
         {
-            _LstStud = Entities.Students.Where(t => t.id_Prepod == prepodavatel.ID_Prepodavatel).ToList();
-            foreach (var item in _LstStud)
+            _listStudents = Entities.Student.Where(t => t.id_Teacher == prepodavatel.ID_Teacher).ToList();
+            foreach (var item in _listStudents)
             {
                 if (item.Monday == true)
                 {
-                    _LstStudMonday.Add(item);
+                    _listStudentsMonday.Add(item);
                 }
                 if (item.Tuesday == true)
                 {
-                    _LstStudTuesday.Add(item);
+                    _listStudentsTuesday.Add(item);
                 }
                 if (item.Wednesday == true)
                 {
-                    _LstStudWednesday.Add(item);
+                    _listStudentsWednesday.Add(item);
                 }
                 if (item.Thursday == true)
                 {
-                    _LstStudThursday.Add(item);
+                    _listStudentsThursday.Add(item);
                 }
                 if (item.Friday == true)
                 {
-                    _LstStudFriday.Add(item);
+                    _listStudentsFriday.Add(item);
                 }
                 if (item.Saturday == true)
                 {
-                    _LstStudSaturday.Add(item);
+                    _listStudentsSaturday.Add(item);
                 }
             }
         }
@@ -128,29 +126,29 @@ namespace PlanMVMU
             switch (date.DayOfWeek)
             {
                 case DayOfWeek.Monday:
-                    return _CheckStud(_LstStudMonday);
+                    return _CheckStud(_listStudentsMonday);
                 case DayOfWeek.Tuesday:
-                    return _CheckStud(_LstStudTuesday);
+                    return _CheckStud(_listStudentsTuesday);
                 case DayOfWeek.Wednesday:
-                    return _CheckStud(_LstStudWednesday);
+                    return _CheckStud(_listStudentsWednesday);
                 case DayOfWeek.Thursday:
-                    return _CheckStud(_LstStudThursday);
+                    return _CheckStud(_listStudentsThursday);
                 case DayOfWeek.Friday:
-                    return _CheckStud(_LstStudFriday);
+                    return _CheckStud(_listStudentsFriday);
                 case DayOfWeek.Saturday:
-                    return _CheckStud(_LstStudSaturday);
+                    return _CheckStud(_listStudentsSaturday);
                 case DayOfWeek.Sunday:
-                    return _CheckStud(_LstStudSunday);
+                    return _CheckStud(_listStudentsSunday);
                 default:
                     return false;
             }
         }
 
-        private bool _CheckStud(List<Students> lstStud)
+        private bool _CheckStud(List<Student> lstStud)
         {
             if (_indexList < lstStud.Count())
             {
-                students = lstStud[_indexList];
+                _student = lstStud[_indexList];
                 if (_month != DateSession.Month)
                 {
                     _month = DateSession.Month;
@@ -168,14 +166,14 @@ namespace PlanMVMU
             }
         }
 
-        private void LoadStud(Students students)
+        private void LoadStud(Student students)
         {
-            _kompos1 = null;
-            _kompos2 = null;
-            _kompos3 = null;
-            LblStudName.Content = students.NameFile;
-            LblStudGroup.Content = students.StudGroup;
-            LblStudCourse.Content = students.StudCourse;
+            _composer1 = null;
+            _composer2 = null;
+            _composer3 = null;
+            LblStudentName.Content = students.NameFile;
+            LblStudentGroup.Content = students.StudentGroup;
+            LblStudentCourse.Content = students.StudentCourse;
             DateSertified = DateSession.AddDays(-7);
 
             if (DateSertified < Convert.ToDateTime("01.09." + DateTime.Now.Year.ToString()) && DateSertified > Convert.ToDateTime("01.06." + DateTime.Now.Year.ToString()))
@@ -185,23 +183,23 @@ namespace PlanMVMU
 
             LblDateSertified.Content = "«" + DateSertified.Day + "» " + GetMonthName.GetName(DateSertified.Month) + " " + DateSertified.Year;
             LblDateSession.Content = DateSession.Day + "." + DateSession.Month + "." + DateSession.Year;
-            CBKompos1.ItemsSource = Entities.Kompositors.Where(t => t.id_Student == students.ID_Student).ToList();
-            CBKompos1.DisplayMemberPath = "KomposAndName";
-            if (students.LastKompos1 != null && Entities.Kompositors.FirstOrDefault(t=>t.ID_Kompos == students.LastKompos1) != default)
+            CBComposer1.ItemsSource = Entities.Composer.Where(t => t.id_Student == students.ID_Student).ToList();
+            CBComposer1.DisplayMemberPath = "ComposerAndComposition";
+            if (students.LastComposer1 != null && Entities.Composer.FirstOrDefault(t=>t.ID_Composer == students.LastComposer1) != default)
             {
-                CBKompos1.Text = Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos1).KomposAndName;
+                CBComposer1.Text = Entities.Composer.FirstOrDefault(t => t.ID_Composer == students.LastComposer1).ComposerAndComposition;
             }
-            CBKompos2.ItemsSource = Entities.Kompositors.Where(t => t.id_Student == students.ID_Student).ToList();
-            CBKompos2.DisplayMemberPath = "KomposAndName";
-            if (students.LastKompos2 != null && Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos2) != default)
+            CBComposer2.ItemsSource = Entities.Composer.Where(t => t.id_Student == students.ID_Student).ToList();
+            CBComposer2.DisplayMemberPath = "ComposerAndComposition";
+            if (students.LastComposer2 != null && Entities.Composer.FirstOrDefault(t => t.ID_Composer == students.LastComposer2) != default)
             {
-                CBKompos2.Text = Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos2).KomposAndName;
+                CBComposer2.Text = Entities.Composer.FirstOrDefault(t => t.ID_Composer == students.LastComposer2).ComposerAndComposition;
             }
-            CBKompos3.ItemsSource = Entities.Kompositors.Where(t => t.id_Student == students.ID_Student).ToList();
-            CBKompos3.DisplayMemberPath = "KomposAndName";
-            if (students.LastKompos3 != null && Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos3) != default)
+            CBComposer3.ItemsSource = Entities.Composer.Where(t => t.id_Student == students.ID_Student).ToList();
+            CBComposer3.DisplayMemberPath = "ComposerAndComposition";
+            if (students.LastComposer3 != null && Entities.Composer.FirstOrDefault(t => t.ID_Composer == students.LastComposer3) != default)
             {
-                CBKompos3.Text = Entities.Kompositors.FirstOrDefault(t => t.ID_Kompos == students.LastKompos3).KomposAndName;
+                CBComposer3.Text = Entities.Composer.FirstOrDefault(t => t.ID_Composer == students.LastComposer3).ComposerAndComposition;
             }
             Properties.Settings.Default.Stop = true;
         }
@@ -212,12 +210,12 @@ namespace PlanMVMU
             {
                 BtnNextPlan.IsEnabled = true;
                 BtnStopCreatePlan.IsEnabled = true;
-                CBKategory1.ItemsSource = Entities.Kategorii.ToList();
-                CBKategory1.DisplayMemberPath = "NameKategory";
-                CBKategory2.ItemsSource = Entities.Kategorii.ToList();
-                CBKategory2.DisplayMemberPath = "NameKategory";
-                CBKategory3.ItemsSource = Entities.Kategorii.ToList();
-                CBKategory3.DisplayMemberPath = "NameKategory";
+                CBCategory1.ItemsSource = Entities.Category.ToList();
+                CBCategory1.DisplayMemberPath = "NameCategory";
+                CBCategory2.ItemsSource = Entities.Category.ToList();
+                CBCategory2.DisplayMemberPath = "NameCategory";
+                CBCategory3.ItemsSource = Entities.Category.ToList();
+                CBCategory3.DisplayMemberPath = "NameCategory";
                 CBStage1.ItemsSource = Stages;
                 CBStage2.ItemsSource = Stages;
                 CBStage3.ItemsSource = Stages;
@@ -226,14 +224,14 @@ namespace PlanMVMU
 
         private void CBKompos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((Kompositors)CBKompos1.SelectedItem != null)
+            if ((Composer)CBComposer1.SelectedItem != null)
             {
-                _kompos1 = (Kompositors)CBKompos1.SelectedItem;
-                _kateg1 = ((Kompositors)CBKompos1.SelectedItem).Kategorii;
-                CBKategory1.Text = _kateg1.NameKategory;
-                if (((Kompositors)CBKompos1.SelectedItem).LastStage != null)
+                _composer1 = (Composer)CBComposer1.SelectedItem;
+                _category1 = ((Composer)CBComposer1.SelectedItem).Category;
+                CBCategory1.Text = _category1.NameCategory;
+                if (((Composer)CBComposer1.SelectedItem).LastStage != null)
                 {
-                    int Stage = (int)((Kompositors)CBKompos1.SelectedItem).LastStage;
+                    int Stage = (int)((Composer)CBComposer1.SelectedItem).LastStage;
                     CBStage1.Text = Stage.ToString();
                 }
                 else
@@ -244,26 +242,26 @@ namespace PlanMVMU
             }
             else
             {
-                CBKategory1.SelectedIndex = -1;
+                CBCategory1.SelectedIndex = -1;
                 CBStage1.SelectedIndex = -1;
                 TBText1.Text = "";
-                _kompos1 = null;
-                _kateg1 = null;
+                _composer1 = null;
+                _category1 = null;
             }
         }
 
         private void CBKompos2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((Kompositors)CBKompos2.SelectedItem != null)
+            if ((Composer)CBComposer2.SelectedItem != null)
             {
-                _kompos2 = (Kompositors)CBKompos2.SelectedItem;
-                _kateg2 = ((Kompositors)CBKompos2.SelectedItem).Kategorii;
-                CBKategory2.Text = _kateg2.NameKategory;
-                if (((Kompositors)CBKompos2.SelectedItem).LastStage != null)
+                _composer2 = (Composer)CBComposer2.SelectedItem;
+                _category2 = ((Composer)CBComposer2.SelectedItem).Category;
+                CBCategory2.Text = _category2.NameCategory;
+                if (((Composer)CBComposer2.SelectedItem).LastStage != null)
                 {
-                    int Stage = (int)((Kompositors)CBKompos2.SelectedItem).LastStage;
+                    int Stage = (int)((Composer)CBComposer2.SelectedItem).LastStage;
                     CBStage2.Text = Stage.ToString();
-                    TBText2.Text = Entities.OriginalText.FirstOrDefault(t => t.Stage == Stage && t.id_Kategory == ((Kategorii)CBKategory2.SelectedItem).ID_Kategoriya).TextCompose;
+                    TBText2.Text = Entities.OriginalText.FirstOrDefault(t => t.Stage == Stage && t.id_Category == ((Category)CBCategory2.SelectedItem).ID_Category).Text;
                 }
                 else
                 {
@@ -272,26 +270,26 @@ namespace PlanMVMU
             }
             else
             {
-                CBKategory2.SelectedIndex = -1;
+                CBCategory2.SelectedIndex = -1;
                 CBStage2.SelectedIndex = -1;
                 TBText2.Text = "";
-                _kompos2 = null;
-                _kateg2 = null;
+                _composer2 = null;
+                _category2 = null;
             }
         }
 
         private void CBKompos3_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((Kompositors)CBKompos3.SelectedItem != null)
+            if ((Composer)CBComposer3.SelectedItem != null)
             {
-                _kompos3 = (Kompositors)CBKompos3.SelectedItem;
-                _kateg3 = ((Kompositors)CBKompos3.SelectedItem).Kategorii;
-                CBKategory3.Text = _kateg3.NameKategory;
-                if (((Kompositors)CBKompos3.SelectedItem).LastStage != null)
+                _composer3 = (Composer)CBComposer3.SelectedItem;
+                _category3 = ((Composer)CBComposer3.SelectedItem).Category;
+                CBCategory3.Text = _category3.NameCategory;
+                if (((Composer)CBComposer3.SelectedItem).LastStage != null)
                 {
-                    int Stage = (int)((Kompositors)CBKompos3.SelectedItem).LastStage;
+                    int Stage = (int)((Composer)CBComposer3.SelectedItem).LastStage;
                     CBStage3.Text = Stage.ToString();
-                    TBText3.Text = Entities.OriginalText.FirstOrDefault(t => t.Stage == Stage && t.id_Kategory == ((Kategorii)CBKategory3.SelectedItem).ID_Kategoriya).TextCompose;
+                    TBText3.Text = Entities.OriginalText.FirstOrDefault(t => t.Stage == Stage && t.id_Category == ((Category)CBCategory3.SelectedItem).ID_Category).Text;
                 }
                 else
                 {
@@ -300,17 +298,17 @@ namespace PlanMVMU
             }
             else
             {
-                CBKategory3.SelectedIndex = -1;
+                CBCategory3.SelectedIndex = -1;
                 CBStage3.SelectedIndex = -1;
                 TBText3.Text = "";
-                _kompos3 = null;
-                _kateg3 = null;
+                _composer3 = null;
+                _category3 = null;
             }
         }
 
         private void CBKategory1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CBKategory1.SelectedIndex != -1)
+            if (CBCategory1.SelectedIndex != -1)
             {
                 CBStage1.IsEnabled = true;
             }
@@ -322,7 +320,7 @@ namespace PlanMVMU
 
         private void CBKategory2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CBKategory2.SelectedIndex != -1)
+            if (CBCategory2.SelectedIndex != -1)
             {
                 CBStage2.IsEnabled = true;
             }
@@ -334,7 +332,7 @@ namespace PlanMVMU
 
         private void CBKategory3_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CBKategory3.SelectedIndex != -1)
+            if (CBCategory3.SelectedIndex != -1)
             {
                 CBStage3.IsEnabled = true;
             }
@@ -346,17 +344,17 @@ namespace PlanMVMU
 
         private void BtnCloseKompos1_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CBKompos1.SelectedIndex = -1;
+            CBComposer1.SelectedIndex = -1;
         }
 
         private void BtnCloseKompos2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CBKompos2.SelectedIndex = -1;
+            CBComposer2.SelectedIndex = -1;
         }
 
         private void BtnCloseKompos3_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CBKompos3.SelectedIndex = -1;
+            CBComposer3.SelectedIndex = -1;
         }
 
         private void CBStage1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -364,10 +362,10 @@ namespace PlanMVMU
             if (CBStage1.SelectedIndex != -1)
             {
                 _stage1 = (int)CBStage1.Items.GetItemAt(CBStage1.SelectedIndex);
-                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Kategory == _kateg1.ID_Kategoriya && t.Stage == _stage1 && t.id_Prepodavatel == _Prepod.ID_Prepodavatel);
+                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Category == _category1.ID_Category && t.Stage == _stage1 && t.id_Teacher == _teacher.ID_Teacher);
                 if (originalText != default)
                 {
-                    TBText1.Text = originalText.TextCompose;
+                    TBText1.Text = originalText.Text;
                 }
                 else
                 {
@@ -385,10 +383,10 @@ namespace PlanMVMU
             if (CBStage2.SelectedIndex != -1)
             {
                 _stage2 = (int)CBStage2.Items.GetItemAt(CBStage2.SelectedIndex);
-                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Kategory == _kateg2.ID_Kategoriya && t.Stage == _stage2 && t.id_Prepodavatel == _Prepod.ID_Prepodavatel);
+                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Category == _category2.ID_Category && t.Stage == _stage2 && t.id_Teacher == _teacher.ID_Teacher);
                 if (originalText != default)
                 {
-                    TBText2.Text = originalText.TextCompose;
+                    TBText2.Text = originalText.Text;
                 }
                 else
                 {
@@ -406,10 +404,10 @@ namespace PlanMVMU
             if (CBStage3.SelectedIndex != -1)
             {
                 _stage3 = (int)CBStage3.Items.GetItemAt(CBStage3.SelectedIndex);
-                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Kategory == _kateg3.ID_Kategoriya && t.Stage == _stage3 && t.id_Prepodavatel == _Prepod.ID_Prepodavatel);
+                OriginalText originalText = Entities.OriginalText.FirstOrDefault(t => t.id_Category == _category3.ID_Category && t.Stage == _stage3 && t.id_Teacher == _teacher.ID_Teacher);
                 if (originalText != default)
                 {
-                    TBText3.Text = originalText.TextCompose;
+                    TBText3.Text = originalText.Text;
                 }
                 else
                 {
@@ -430,12 +428,12 @@ namespace PlanMVMU
             var items = new Dictionary<string, string>
             {
                 {"<SertifDt>", DateSertified.ToString("«d» ") + GetMonthName.GetName(DateSertified.Month) + " " + DateSertified.ToString("yyyy") + "г." },
-                {"<Name>", students.NameText},
+                {"<Name>", _student.NameText},
                 {"dd", DateSession.ToString("dd")},
                 {"mm", DateSession.ToString("MM")},
                 {"yyyy", DateSession.ToString("yyyy")},
-                {"<Course>", students.StudCourse.ToString()},
-                {"<Group>", students.StudGroup.ToString()},
+                {"<Course>", _student.StudentCourse.ToString()},
+                {"<Group>", _student.StudentGroup.ToString()},
                 {"<Theme>", Properties.Settings.Default.ThemeLesson},
                 {"<TargLearn>", Properties.Settings.Default.TargetLearning},
                 {"<TargDev>", Properties.Settings.Default.TargetDevelopment},
@@ -445,18 +443,18 @@ namespace PlanMVMU
                 {"<LearnTools>", Properties.Settings.Default.LearningTools},
                 {"<FrstPt>", Properties.Settings.Default.FirstPart},
                 {"<TwPt>", Properties.Settings.Default.TwoPart},
-                {"<Prepodavatel>", _Prepod.Name},
+                {"<Prepodavatel>", _teacher.TeacherName},
                 {"<FinishSertDt>", DateSertified.ToString("dd.MM.yyyy") + "г."}
             };
-            if (_kompos1 != null && _kompos2 != null && _kompos3 != null)
+            if (_composer1 != null && _composer2 != null && _composer3 != null)
             {
-                _fileInfo = new FileInfo(System.IO.Directory.GetCurrentDirectory() + "\\Shablon\\ShablonPlana3.docx");
+                _fileInfo = new FileInfo(System.IO.Directory.GetCurrentDirectory() + "\\Views\\Resources\\PlanTemplates\\PlanTemplates3.docx");
                 WordReplacer.WholeChunks(TBText1.Text, Text1);
                 WordReplacer.WholeChunks(TBText2.Text, Text2);
                 WordReplacer.WholeChunks(TBText3.Text, Text3);
-                items.Add("<Compose1>", _kompos1.KomposAndName);
-                items.Add("<Compose2>", _kompos2.KomposAndName);
-                items.Add("<Compose3>", _kompos3.KomposAndName);
+                items.Add("<Compose1>", _composer1.ComposerAndComposition);
+                items.Add("<Compose2>", _composer2.ComposerAndComposition);
+                items.Add("<Compose3>", _composer3.ComposerAndComposition);
                 items.Add("<Text1>", Text1[0]);
                 items.Add("<Text11>", Text1[1]);
                 items.Add("<Text111>", Text1[2]);
@@ -466,46 +464,46 @@ namespace PlanMVMU
                 items.Add("<Text3>", Text3[0]);
                 items.Add("<Text33>", Text3[1]);
                 items.Add("<Text333>", Text3[2]);
-                _kompos1.LastStage = _stage1;
-                _kompos2.LastStage = _stage2;
-                _kompos3.LastStage = _stage3;
-                students.LastKompos1 = _kompos1.ID_Kompos;
-                students.LastKompos2 = _kompos2.ID_Kompos;
-                students.LastKompos3 = _kompos3.ID_Kompos;
+                _composer1.LastStage = _stage1;
+                _composer2.LastStage = _stage2;
+                _composer3.LastStage = _stage3;
+                _student.LastComposer1 = _composer1.ID_Composer;
+                _student.LastComposer2 = _composer2.ID_Composer;
+                _student.LastComposer3 = _composer3.ID_Composer;
                 Entities.SaveChanges();
             }
-            else if (_kompos1 != null && _kompos2 != null && _kompos3 == null)
+            else if (_composer1 != null && _composer2 != null && _composer3 == null)
             {
                 _fileInfo = new FileInfo(System.IO.Directory.GetCurrentDirectory() + "\\Shablon\\ShablonPlana2.docx");
                 WordReplacer.WholeChunks(TBText1.Text, Text1);
                 WordReplacer.WholeChunks(TBText2.Text, Text2);
-                items.Add("<Compose1>", _kompos1.KomposAndName);
-                items.Add("<Compose2>", _kompos2.KomposAndName);
+                items.Add("<Compose1>", _composer1.ComposerAndComposition);
+                items.Add("<Compose2>", _composer2.ComposerAndComposition);
                 items.Add("<Text1>", Text1[0]);
                 items.Add("<Text11>", Text1[1]);
                 items.Add("<Text111>", Text1[2]);
                 items.Add("<Text2>", Text2[0]);
                 items.Add("<Text22>", Text2[1]);
                 items.Add("<Text222>", Text2[2]);
-                _kompos1.LastStage = _stage1;
-                _kompos2.LastStage = _stage2;
-                students.LastKompos1 = _kompos1.ID_Kompos;
-                students.LastKompos2 = _kompos2.ID_Kompos;
-                students.LastKompos3 = null;
+                _composer1.LastStage = _stage1;
+                _composer2.LastStage = _stage2;
+                _student.LastComposer1 = _composer1.ID_Composer;
+                _student.LastComposer2 = _composer2.ID_Composer;
+                _student.LastComposer3 = null;
                 Entities.SaveChanges();
             }
-            else if (_kompos1 != null && _kompos2 == null && _kompos3 == null)
+            else if (_composer1 != null && _composer2 == null && _composer3 == null)
             {
                 _fileInfo = new FileInfo(System.IO.Directory.GetCurrentDirectory() + "\\Shablon\\ShablonPlana1.docx");
                 WordReplacer.WholeChunks(TBText1.Text, Text1);
-                items.Add("<Compose1>", _kompos1.KomposAndName);
+                items.Add("<Compose1>", _composer1.ComposerAndComposition);
                 items.Add("<Text1>", Text1[0]);
                 items.Add("<Text11>", Text1[1]);
                 items.Add("<Text111>", Text1[2]);
-                _kompos1.LastStage = _stage1;
-                students.LastKompos1 = _kompos1.ID_Kompos;
-                students.LastKompos2 = null;
-                students.LastKompos3 = null;
+                _composer1.LastStage = _stage1;
+                _student.LastComposer1 = _composer1.ID_Composer;
+                _student.LastComposer2 = null;
+                _student.LastComposer3 = null;
                 Entities.SaveChanges();
             }
             else
@@ -514,7 +512,7 @@ namespace PlanMVMU
                 return;
             }
 
-            if (WordReplacer.ReplaceWord(items, PathSave, DateSession, students, _fileInfo))
+            if (WordReplacer.ReplaceWord(items, PathSave, DateSession, _student, _fileInfo))
             {
                 _indexList += 1;
                 Properties.Settings.Default.Stop = false;
@@ -522,8 +520,7 @@ namespace PlanMVMU
                 {
                     if (_CheckDayofWeek(DateSession))
                     {
-                        LoadStud(students);
-                        //_check = true;
+                        LoadStud(_student);
                     }
                 }
             }
@@ -544,7 +541,8 @@ namespace PlanMVMU
             Properties.Settings.Default.Stop = true;
             Properties.Settings.Default.StartDate = DateSession;
             Properties.Settings.Default.StopDate = DateSession.AddMonths(1);
-            BtnNextPlan.IsEnabled = false;
+            mainframe.frame.IsEnabled = false;
+            
         }
     }
 }
